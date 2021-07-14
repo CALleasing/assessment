@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "calstaffrate",
+    "name": "CAL-Assessment",
     "slug": "calstaffrate",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,9 +17,11 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.cal2009.calassessment",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.cal2009.calassessment",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

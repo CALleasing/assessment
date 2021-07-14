@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, SafeAreaView, ScrollView, ActivityIndicator, StyleSheet } from 'react-native';
 import { Button, Avatar } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
 
 import { AuthContext } from '../components/context';
+import axiox from 'axios';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { COLORS } from '../constants/theme';
@@ -11,6 +12,7 @@ import { COLORS } from '../constants/theme';
 const LoginScreen = ({ navigation }) => {
 
     const [textError, setTextError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const [data, setData] = useState({
         username: '',
@@ -18,6 +20,30 @@ const LoginScreen = ({ navigation }) => {
         check_textInputChange: false,
         secureTextEntry: true
     });
+
+    const login = () => {
+        const object = {
+            userid: data.username,
+            password: data.password
+        }
+
+        axiox.post('https://program-api.herokuapp.com/login', object)
+            .then(res => {
+                console.log(res.data);
+                setIsLoading(false);
+                loginHandle(data.username, data.password);
+
+            })
+            .catch(err => {
+                // showDialog();
+                // setTextQueue("การจองล้มเหลว \nเนื่องจากคิวเต็ม");
+                // setStatus("จองคิวล้มเหลว");
+                setTextError("User ID หรือ Password ไม่ถูกต้อง")
+                console.log(err)
+                setIsLoading(false);
+            });
+
+    }
 
     const { signIn } = React.useContext(AuthContext);
 
@@ -76,12 +102,12 @@ const LoginScreen = ({ navigation }) => {
                         onChangeText={(val) => textInputChange(val)} />
                 </View>
 
-                <Text style={styles.text_footer}>Phone Number</Text>
+                <Text style={styles.text_footer}>Password</Text>
                 <View style={styles.action}>
-                    <Icon name='phone'
+                    <Icon name='lock'
                         color={COLORS.primary}
                         size={20} />
-                    <TextInput placeholder="Phone number ..."
+                    <TextInput placeholder="Password ..."
                         style={styles.text_input}
                         onChangeText={(val) => handlePasswordChange(val)} />
                 </View>
@@ -93,14 +119,30 @@ const LoginScreen = ({ navigation }) => {
                     // icon="camera"
                     mode="contained"
                     onPress={() => {
-                        if (data.username === "User" && data.password === "Pass") {
-                            loginHandle(data.username, data.password);
-                        } else {
-                            setTextError("User หรือ Phone ไม่ถูกต้อง")
-                        }
+                        setIsLoading(true);
+                        login();
                     }}>
-                    <Text>เข้าสู่ระบบ</Text>
+                    <Text style={{ fontSize: 18}}>เข้าสู่ระบบ</Text>
                 </Button>
+
+                {isLoading ?
+
+                    <ActivityIndicator style={{
+                        marginTop: 20,
+                        // position: 'absolute',
+                        // left: 0,
+                        // right: 0,
+                        // top: 0,
+                        // bottom: 0,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }} size="large" color="#0275d8" />
+
+                    :
+
+                    null
+                }
+
 
             </Animatable.View>
 

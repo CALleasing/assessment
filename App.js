@@ -5,11 +5,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { LOGIN } from './src/constants/variables'
 
 import HomeScreen from './src/screens/HomeScreen'
 import AssessmentScreen from './src/screens/AssessmentScreen';
 import QuestionnaireAllStaffScreen from './src/screens/QuestionnaireAllStaffScreen';
 import QuestionnaireManagerScreen from './src/screens/QuestionnaireManagerScreen';
+import VideoWebViewScreen from './src/screens/VideoWebViewScreen';
 import LoginScreen from './src/screens/LoginScreen';
 
 import { AuthContext } from './src/components/context';
@@ -20,9 +22,9 @@ const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
 const Questionnaire = ({ route }) => {
-  let userId = route.params.userId;
-  let year = route.params.year;
-  let part = route.params.part
+  const userId = route.params.userId;
+  const year = route.params.year;
+  const part = route.params.part
 
   // console.log(route);
   return (
@@ -86,7 +88,10 @@ const App = () => {
       let userToken;
       // userName = null;
       // if (userName === 'User' && password === 'Pass') {
-      userToken = 'asdf'
+      userToken = userName;
+      LOGIN.userid = userName;
+
+      // console.log(LOGIN.userid);
       // }
       dispacth({ type: 'LOGIN', id: userName, token: userToken });
     },
@@ -97,26 +102,28 @@ const App = () => {
     },
   }), []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      // setIsLoading(false);
-      dispacth({ type: 'RETRIEVE_TOKEN', token: 'asdf' });
-    }, 1000);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     // setIsLoading(false);
+  //     // dispacth({ type: 'RETRIEVE_TOKEN', token: '' });
+  //   }, 1000);
 
-  }, [])
+  // }, [])
 
-  if (loginState.isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    )
-  }
+  // if (loginState.isLoading) {
+  //   return (
+  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //       <ActivityIndicator size="large" />
+  //     </View>
+  //   )
+  // }
 
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
+      {/* {console.log(loginState.userToken)} */}
         {loginState.userToken != null ? (
+         
           <Stack.Navigator
             screenOptions={{
               headerShown: true,
@@ -131,9 +138,10 @@ const App = () => {
             }}
             initialRouteName="Home">
 
-            <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'หน้าแรก', }} />
-            <Stack.Screen name="Assessment" component={AssessmentScreen} options={{ title: 'ปีประเมิน' }} initialParams={{ year: {} }} />
+            <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'หน้าแรก', }} initialParams={{ userid: loginState.userToken }} />
+            <Stack.Screen name="Assessment" component={AssessmentScreen} options={{ title: 'ปีประเมิน' }} />
             <Stack.Screen name="Questionnaire" component={Questionnaire} options={{ title: 'แบบประเมิน' }} />
+            <Stack.Screen name="VideoWebView" component={VideoWebViewScreen} options={{ title: 'ดูวิดีโอ' }} />
           </Stack.Navigator>
         )
 

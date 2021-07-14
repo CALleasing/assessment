@@ -31,7 +31,7 @@ const AssessmentScreen = ({ navigation }) => {
                         onPress={() => {
                             navigation.navigate('Questionnaire',
                             {
-                                userId: "test",
+                                // userId: "test",
                                 year: moment(item).format('yyyy'),
                                 part: 1
                             });

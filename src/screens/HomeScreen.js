@@ -5,12 +5,15 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, Card } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
-
-import MainAnnouncement from '../components/MainAnnouncement';
+import { LOGIN } from '../constants/variables'
 
 import { SIZES, COLORS, FONTS } from '../constants/theme';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation, route }) => {
+
+    const userid = LOGIN.userid;
+
+    console.log(userid);
 
     const list = [
         {
@@ -47,8 +50,8 @@ const HomeScreen = ({ navigation }) => {
                     onPress={() => {
                         {
                             item.id === 1 ?
-                                navigation.navigate('Assessment', { item: item.id }) :
-                                navigation.navigate('Assessment', { item: item.id })
+                                navigation.navigate('Assessment', { item: item.id }) : null
+                            // navigation.navigate('Assessment', { item: item.id })
                         }
                         // navigation.navigate('Booking', { item: item.id })
                     }} >
@@ -92,8 +95,8 @@ const HomeScreen = ({ navigation }) => {
     return (
         // <ScrollView>
         <SafeAreaView >
-            <Animatable.View 
-            animation='fadeIn'>
+            <Animatable.View
+                animation='fadeIn'>
                 <LinearGradient
                     style={styles.linear_gradient}
                     colors={[COLORS.primary, COLORS.primary]} >
@@ -103,16 +106,6 @@ const HomeScreen = ({ navigation }) => {
                     {renderMenuItem({ navigation })}
                 </View>
             </Animatable.View>
-            {/* <LinearGradient
-                    style={styles.linear_gradient}
-                    colors={[COLORS.primary, COLORS.primary]} >
-                    <Text style={styles.text_header}>ประกาศข่าวสาร</Text>
-                </LinearGradient>
-                <View>
-                    <MainAnnouncement />
-                </View> */}
-
-
 
         </SafeAreaView>
 
