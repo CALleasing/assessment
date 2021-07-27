@@ -31,7 +31,9 @@ const LoginScreen = ({ navigation }) => {
             .then(res => {
                 console.log(res.data);
                 setIsLoading(false);
-                loginHandle(data.username, data.password);
+                
+                loginHandle(data.username, res.data.position, res.data.department);
+                // console.log(res.data.position);
 
             })
             .catch(err => {
@@ -77,8 +79,8 @@ const LoginScreen = ({ navigation }) => {
         });
     }
 
-    const loginHandle = (username, password) => {
-        signIn(username, password);
+    const loginHandle = (username, position, department) => {
+        signIn(username, position, department);
         // console.log(username, password);
     }
 

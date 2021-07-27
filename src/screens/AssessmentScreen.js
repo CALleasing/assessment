@@ -7,13 +7,16 @@ import * as Animatable from 'react-native-animatable';
 
 import moment from 'moment';
 import 'moment/locale/th';
+import { LOGIN } from '../constants/variables';
 
-const AssessmentScreen = ({ navigation }) => {
+const AssessmentScreen = ({ navigation, route }) => {
 
+    let sheetID = route.params.item;
+    // console.log(sheetID);
     let presentYear = new Date();
     let passedYear = new Date();
     passedYear.setFullYear(presentYear.getFullYear() - 5);
-    console.log(passedYear);
+    // console.log(passedYear);
 
     var allYear = [];
 
@@ -29,12 +32,26 @@ const AssessmentScreen = ({ navigation }) => {
                 <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
                     <TouchableOpacity
                         onPress={() => {
+                            sheetID === 1 ? 
                             navigation.navigate('Questionnaire',
                             {
-                                // userId: "test",
+                                userId: LOGIN.userid,
+                                sheetID: sheetID,
                                 year: moment(item).format('yyyy'),
                                 part: 1
-                            });
+                            } 
+                            )
+
+                            :
+                            navigation.navigate('UserList',
+                            {
+                                userId: null,
+                                sheetID: sheetID,
+                                year: moment(item).format('yyyy'),
+                                part: 1
+                            } 
+                            
+                            );
                         }
                         }>
                         <Card style={{
@@ -61,12 +78,25 @@ const AssessmentScreen = ({ navigation }) => {
 
                     <TouchableOpacity
                         onPress={() => {
+                            sheetID === 1 ? 
                             navigation.navigate('Questionnaire',
                             {
-                                userId: "test",
+                                // userId: "test",
+                                userId: LOGIN.userid,
+                                sheetID: sheetID,
                                 year: moment(item).format('yyyy'),
                                 part: 2
-                            });
+                            }) 
+                            :
+                            navigation.navigate('UserList',
+                            {
+                                userId: null,
+                                sheetID: sheetID,
+                                year: moment(item).format('yyyy'),
+                                part: 2
+                            } 
+                            )
+                            ;
                         }
                         }>
                         <Card style={{

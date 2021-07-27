@@ -9,36 +9,41 @@ import { LOGIN } from './src/constants/variables'
 
 import HomeScreen from './src/screens/HomeScreen'
 import AssessmentScreen from './src/screens/AssessmentScreen';
-import QuestionnaireAllStaffScreen from './src/screens/QuestionnaireAllStaffScreen';
-import QuestionnaireManagerScreen from './src/screens/QuestionnaireManagerScreen';
+import StaffQuestionnaireScreen from './src/screens/StaffQuestionnaireScreen';
+import ManagerQuestionnaireScreen from './src/screens/ManagerQuestionnaireScreen';
 import VideoWebViewScreen from './src/screens/VideoWebViewScreen';
 import LoginScreen from './src/screens/LoginScreen';
 
 import { AuthContext } from './src/components/context';
 import RootStackScreen from './src/screens/RootStackScreen';
 import { COLORS } from './src/constants/theme';
+import UserListScreen from './src/screens/UserListScreen';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
 
 const Questionnaire = ({ route }) => {
+
   const userId = route.params.userId;
+  const sheetID = route.params.sheetID;
   const year = route.params.year;
-  const part = route.params.part
+  const part = route.params.part;
 
   // console.log(route);
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="QuestionnaireAllStaff"
-        component={QuestionnaireAllStaffScreen}
+        name="AllStaff"
+        component={StaffQuestionnaireScreen}
         options={{ title: 'ทั่วไป' }}
-        initialParams={{ userId: userId, year: year, part: part }} />
+        // listeners={({ navigation }) => ({ blur: () => navigation.setParams({ screen: undefined }) })}
+        initialParams={{ userId: userId, sheetID: sheetID, year: year, part: part }} />
       <Tab.Screen
-        name="QuestionnaireManager"
-        component={QuestionnaireManagerScreen}
+        name="Manager"
+        component={ManagerQuestionnaireScreen}
         options={{ title: 'ผู้จัดการถาม' }}
-        initialParams={{ userId: userId, year: year, part: part }} />
+        // listeners={({ navigation }) => ({ blur: () => navigation.setParams({ screen: undefined }) })}
+        initialParams={{ userId: userId, sheetID: sheetID, year: year, part: part }} />
     </Tab.Navigator>
   );
 }
@@ -82,16 +87,18 @@ const App = () => {
   const [loginState, dispacth] = React.useReducer(loginReducer, initialLoginState);
 
   const authContext = useMemo(() => ({
-    signIn: (userName, password) => {
+    signIn: (userName, position, department) => {
       // setUserToken('asdf');
       // setIsLoading(false);
       let userToken;
       // userName = null;
       // if (userName === 'User' && password === 'Pass') {
       userToken = userName;
+      LOGIN.position = position;
+      LOGIN.department = department;
       LOGIN.userid = userName;
 
-      // console.log(LOGIN.userid);
+      // console.log(LOGIN.position);
       // }
       dispacth({ type: 'LOGIN', id: userName, token: userToken });
     },
@@ -121,9 +128,9 @@ const App = () => {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-      {/* {console.log(loginState.userToken)} */}
+        {/* {console.log(loginState.userToken)} */}
         {loginState.userToken != null ? (
-         
+
           <Stack.Navigator
             screenOptions={{
               headerShown: true,
@@ -140,6 +147,7 @@ const App = () => {
 
             <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'หน้าแรก', }} initialParams={{ userid: loginState.userToken }} />
             <Stack.Screen name="Assessment" component={AssessmentScreen} options={{ title: 'ปีประเมิน' }} />
+            <Stack.Screen name="UserList" component={UserListScreen} options={{ title: 'รายชื่อ' }} />
             <Stack.Screen name="Questionnaire" component={Questionnaire} options={{ title: 'แบบประเมิน' }} />
             <Stack.Screen name="VideoWebView" component={VideoWebViewScreen} options={{ title: 'ดูวิดีโอ' }} />
           </Stack.Navigator>

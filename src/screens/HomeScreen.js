@@ -5,15 +5,20 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, Card } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
-import { LOGIN } from '../constants/variables'
+import { LOGIN } from '../constants/variables';
+
+import Dialog from "react-native-dialog";
 
 import { SIZES, COLORS, FONTS } from '../constants/theme';
 
 const HomeScreen = ({ navigation, route }) => {
 
     const userid = LOGIN.userid;
+    const position = LOGIN.position;
 
     console.log(userid);
+
+    const [dialogAdmin, setDialogAdmin] = useState(false);
 
     const list = [
         {
@@ -21,10 +26,15 @@ const HomeScreen = ({ navigation, route }) => {
             iconName: 'address-card',
             detail: "ทำแบบประเมิน"
         },
+        // {
+        //     id: 2,
+        //     iconName: 'question-circle',
+        //     detail: "สร้างคำถาม"
+        // },
         {
             id: 2,
-            iconName: 'question-circle',
-            detail: "สร้างคำถาม"
+            iconName: 'check-square',
+            detail: "ดูคำตอบทุกคน"
         }
     ]
 
@@ -49,9 +59,20 @@ const HomeScreen = ({ navigation, route }) => {
                     }}
                     onPress={() => {
                         {
-                            item.id === 1 ?
-                                navigation.navigate('Assessment', { item: item.id }) : null
-                            // navigation.navigate('Assessment', { item: item.id })
+                            console.log(item.id);
+                            console.log(position);
+                            item.id === 1 ? 
+                            navigation.navigate('Assessment', { item: item.id })
+                            
+                            :
+
+                            position === 'admin' || position === 'ผู้จัดการ' ?
+                            navigation.navigate('Assessment', { item: item.id }) :
+                            setDialogAdmin(true);
+
+                            // position === 'ผู้จัดการ' ?
+                            // navigation.navigate('Assessment', { item: item.id }) :
+                            // setDialogAdmin(true);
                         }
                         // navigation.navigate('Booking', { item: item.id })
                     }} >
@@ -78,7 +99,7 @@ const HomeScreen = ({ navigation, route }) => {
                     >
                         {item.department}
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity >
             );
         }
 
@@ -106,6 +127,19 @@ const HomeScreen = ({ navigation, route }) => {
                     {renderMenuItem({ navigation })}
                 </View>
             </Animatable.View>
+
+            <Dialog.Container visible={dialogAdmin}>
+                <Dialog.Title style={{ fontSize: 20, fontWeight: 'bold' }}>ผิดพลาด</Dialog.Title>
+                <Dialog.Description style={{ fontSize: 18, padding: 16 }}>Admin หรือ ผู้จัดการ เท่านั้นที่สามารถดูได้</Dialog.Description>
+
+                <Dialog.Button
+                    label="ตกลง"
+                    onPress={() => {
+
+                        setDialogAdmin(false);
+                    }} />
+
+            </Dialog.Container>
 
         </SafeAreaView>
 
