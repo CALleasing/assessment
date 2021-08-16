@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { LOGIN } from './src/constants/variables'
+import { USER } from './src/constants/variables'
 
 import HomeScreen from './src/screens/HomeScreen'
 import AssessmentScreen from './src/screens/AssessmentScreen';
@@ -94,9 +94,9 @@ const App = () => {
       // userName = null;
       // if (userName === 'User' && password === 'Pass') {
       userToken = userName;
-      LOGIN.position = position;
-      LOGIN.department = department;
-      LOGIN.userid = userName;
+      USER.position = position;
+      USER.department = department;
+      USER.userid = userName;
 
       // console.log(LOGIN.position);
       // }
@@ -109,21 +109,16 @@ const App = () => {
     },
   }), []);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     // setIsLoading(false);
-  //     // dispacth({ type: 'RETRIEVE_TOKEN', token: '' });
-  //   }, 1000);
+  const logoutState = async () => {
+    // console.log(queueSelect);
+    try {
+      await AsyncStorage.removeItem('user_login');
+      return true;
 
-  // }, [])
-
-  // if (loginState.isLoading) {
-  //   return (
-  //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   )
-  // }
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
 
   return (
     <AuthContext.Provider value={authContext}>
@@ -139,7 +134,9 @@ const App = () => {
                 size={20}
                 style={{ marginHorizontal: 16 }}
                 onPress={() => {
-                  authContext.signOut()
+                  logoutState();
+                  authContext.signOut();
+
                 }}
               />
             }}

@@ -1,0 +1,24 @@
+{
+  "files": {
+    "app.js": "/assessment/static/js/app.629d3ea2.chunk.js",
+    "app.js.map": "/assessment/static/js/app.629d3ea2.chunk.js.map",
+    "runtime~app.js": "/assessment/static/js/runtime~app.34b6b7dd.js",
+    "runtime~app.js.map": "/assessment/static/js/runtime~app.34b6b7dd.js.map",
+    "static/js/2.142769b8.chunk.js": "/assessment/static/js/2.142769b8.chunk.js",
+    "static/js/2.142769b8.chunk.js.map": "/assessment/static/js/2.142769b8.chunk.js.map",
+    "fonts/FontAwesome.ttf": "/assessment/./fonts/FontAwesome.ttf",
+    "fonts/MaterialCommunityIcons.ttf": "/assessment/./fonts/MaterialCommunityIcons.ttf",
+    "favicon-16.png": "/assessment/favicon-16.png",
+    "favicon-32.png": "/assessment/favicon-32.png",
+    "favicon.ico": "/assessment/favicon.ico",
+    "index.html": "/assessment/index.html",
+    "serve.json": "/assessment/serve.json",
+    "service-worker.js.map": "/assessment/service-worker.js.map",
+    "static/js/2.142769b8.chunk.js.LICENSE.txt": "/assessment/static/js/2.142769b8.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime~app.34b6b7dd.js",
+    "static/js/2.142769b8.chunk.js",
+    "static/js/app.629d3ea2.chunk.js"
+  ]
+}

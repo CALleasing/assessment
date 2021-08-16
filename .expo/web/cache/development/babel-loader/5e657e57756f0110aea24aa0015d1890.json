@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var LOGIN = {\n  userid: ''\n};","map":{"version":3,"sources":["/Users/drift/Documents/ReactNative/cal-assessment/src/constants/variables.js"],"names":["LOGIN","userid"],"mappings":"AAAA,OAAO,IAAIA,KAAK,GAAG;AACfC,EAAAA,MAAM,EAAE;AADO,CAAZ","sourcesContent":["export var LOGIN = {\n    userid: ''\n};"]},"metadata":{},"sourceType":"module"}

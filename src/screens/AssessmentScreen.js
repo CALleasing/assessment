@@ -7,7 +7,7 @@ import * as Animatable from 'react-native-animatable';
 
 import moment from 'moment';
 import 'moment/locale/th';
-import { LOGIN } from '../constants/variables';
+import { USER } from '../constants/variables';
 
 const AssessmentScreen = ({ navigation, route }) => {
 
@@ -35,7 +35,7 @@ const AssessmentScreen = ({ navigation, route }) => {
                             sheetID === 1 ? 
                             navigation.navigate('Questionnaire',
                             {
-                                userId: LOGIN.userid,
+                                userId: USER.userid,
                                 sheetID: sheetID,
                                 year: moment(item).format('yyyy'),
                                 part: 1
@@ -82,7 +82,7 @@ const AssessmentScreen = ({ navigation, route }) => {
                             navigation.navigate('Questionnaire',
                             {
                                 // userId: "test",
-                                userId: LOGIN.userid,
+                                userId: USER.userid,
                                 sheetID: sheetID,
                                 year: moment(item).format('yyyy'),
                                 part: 2

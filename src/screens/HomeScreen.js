@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Modal, SafeAreaView, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import AwesomeAlert from 'react-native-awesome-alerts';
 import { FlatList } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, Card } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
-import { LOGIN } from '../constants/variables';
+import { USER } from '../constants/variables';
 
-import Dialog from "react-native-dialog";
+// import Dialog from "react-native-dialog";
 
 import { SIZES, COLORS, FONTS } from '../constants/theme';
+import { render } from 'react-dom';
 
 const HomeScreen = ({ navigation, route }) => {
 
-    const userid = LOGIN.userid;
-    const position = LOGIN.position;
+    const userid = USER.userid;
+    const position = USER.position;
 
     console.log(userid);
 
@@ -61,20 +63,16 @@ const HomeScreen = ({ navigation, route }) => {
                         {
                             console.log(item.id);
                             console.log(position);
-                            item.id === 1 ? 
-                            navigation.navigate('Assessment', { item: item.id })
-                            
-                            :
+                            item.id === 1 ?
+                                navigation.navigate('Assessment', { item: item.id })
 
-                            position === 'admin' || position === 'ผู้จัดการ' ?
-                            navigation.navigate('Assessment', { item: item.id }) :
-                            setDialogAdmin(true);
+                                :
 
-                            // position === 'ผู้จัดการ' ?
-                            // navigation.navigate('Assessment', { item: item.id }) :
-                            // setDialogAdmin(true);
+                                position === 'admin' || position === 'ผู้จัดการ' ?
+                                    navigation.navigate('Assessment', { item: item.id }) :
+                                    setDialogAdmin(true);
                         }
-                        // navigation.navigate('Booking', { item: item.id })
+
                     }} >
 
                     <Icon name={item.iconName}
@@ -108,7 +106,7 @@ const HomeScreen = ({ navigation, route }) => {
                 data={list}
                 renderItem={renderItem}
                 numColumns={2}
-                keyExtractor={item => `${item.id}`}
+                keyExtractor={(item, index) => `${index}`}
             />
         );
     }
@@ -123,33 +121,50 @@ const HomeScreen = ({ navigation, route }) => {
                     colors={[COLORS.primary, COLORS.primary]} >
                     <Text style={styles.text_header}>แบบประเมิน</Text>
                 </LinearGradient>
+                <View style={{marginTop: 16,alignSelf:'center', justifyContent: 'center' }}>
+                    <Text style={{fontSize: 18, color: 'green'}}>
+                        สวัสดีคุณ : {USER.name} {USER.lastname}  ( {USER.department} )
+                    </Text>
+                </View>
                 <View>
                     {renderMenuItem({ navigation })}
                 </View>
             </Animatable.View>
 
-            <Dialog.Container visible={dialogAdmin}>
-                <Dialog.Title style={{ fontSize: 20, fontWeight: 'bold' }}>ผิดพลาด</Dialog.Title>
-                <Dialog.Description style={{ fontSize: 18, padding: 16 }}>Admin หรือ ผู้จัดการ เท่านั้นที่สามารถดูได้</Dialog.Description>
-
-                <Dialog.Button
-                    label="ตกลง"
-                    onPress={() => {
-
-                        setDialogAdmin(false);
-                    }} />
-
-            </Dialog.Container>
+            <AwesomeAlert
+                show={dialogAdmin}
+                title="ผิดพลาด"
+                message="Admin หรือ ผู้จัดการ เท่านั้นที่สามารถดูได้"
+                closeOnTouchOutside={false}
+                confirmText="ตกลง"
+                showConfirmButton={true}
+                confirmButtonColor={COLORS.primary}
+                onConfirmPressed={() => {
+                    setDialogAdmin(false);
+                }}
+            />
 
         </SafeAreaView>
-
-        // </ScrollView>
     );
+
+
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    containeralt: {
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderColor: '#eee',
+        borderRadius: 10,
+        borderWidth: 1,
+        justifyContent: 'center',
+        height: 300,
+        margin: 'auto',
+        padding: 30,
+        width: 300
     },
     text_header: {
         padding: 8,

@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, SafeAreaView, ScrollView, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TextInput, SafeAreaView, ScrollView, ActivityIndicator, StyleSheet, Platform } from 'react-native';
 import { Button, Avatar } from 'react-native-paper';
 import * as Animatable from 'react-native-animatable';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../components/context';
 import axiox from 'axios';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { COLORS } from '../constants/theme';
+import { COLORS, SIZES } from '../constants/theme';
+import { USER } from '../constants/variables';
 
 const LoginScreen = ({ navigation }) => {
 
     const [textError, setTextError] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    // const userInfo;
 
     const [data, setData] = useState({
         username: '',
@@ -31,10 +33,19 @@ const LoginScreen = ({ navigation }) => {
             .then(res => {
                 console.log(res.data);
                 setIsLoading(false);
-                
-                loginHandle(data.username, res.data.position, res.data.department);
-                // console.log(res.data.position);
+                // setUserInfo(res.data);
+                loginSaveState(res.data);
 
+                USER.userid = res.data.userid;
+                USER.position = res.data.position;
+                USER.department = res.data.department;
+                USER.name = res.data.name;
+                USER.lastname = res.data.lastname;
+                USER.nickname = res.data.nickname;
+                USER.phone = res.data.phone;
+
+                loginHandle(res.data.userid, res.data.position, res.data.department);
+                
             })
             .catch(err => {
                 // showDialog();
@@ -46,6 +57,55 @@ const LoginScreen = ({ navigation }) => {
             });
 
     }
+
+    const loginSaveState = async (userData) => {
+        try {
+          
+            const jsonAllValue = JSON.stringify(userData);
+            console.log(jsonAllValue);
+            await AsyncStorage.setItem('user_login', jsonAllValue);
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const checkLoginState = async () => {
+        try {
+            const jsonValue = await AsyncStorage.getItem('user_login');
+            // var allData = [];
+            if (jsonValue !== null) {
+               
+                const userInfo = JSON.parse(jsonValue); 
+
+                console.log(userInfo);
+
+                USER.userid = userInfo.userid;
+                USER.position = userInfo.position;
+                USER.department = userInfo.department;
+                USER.name = userInfo.name;
+                USER.lastname = userInfo.lastname;
+                USER.nickname = userInfo.nickname;
+                USER.phone = userInfo.phone;
+
+                loginHandle(userInfo.userid, userInfo.position, userInfo.department)
+                // allData.push(newValue);
+            }
+            else {
+                // allData.push(newValue);
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+    }
+
+    useEffect(() => {
+        // setTimeout(() => {
+            checkLoginState();
+        //  }, 2000);
+    
+    }, []);
 
     const { signIn } = React.useContext(AuthContext);
 
@@ -85,8 +145,7 @@ const LoginScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
-
+        <View style={styles.containerMobile}>
             <View style={styles.header}>
 
                 <Text style={styles.text_header}>แบบประเมินพนักงาน</Text>
@@ -124,7 +183,7 @@ const LoginScreen = ({ navigation }) => {
                         setIsLoading(true);
                         login();
                     }}>
-                    <Text style={{ fontSize: 18}}>เข้าสู่ระบบ</Text>
+                    <Text style={{ fontSize: 18 }}>เข้าสู่ระบบ</Text>
                 </Button>
 
                 {isLoading ?
@@ -154,11 +213,18 @@ const LoginScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    containerMobile: {
         // justifyContent: 'center',
         flex: 1,
         backgroundColor: COLORS.primary
     },
+    // containerWeb: {
+    //     alignSelf: 'center',
+    //     justifyContent: 'center',
+    //     width: SIZES.width/1.3,
+    //     flex: 1,
+    //     backgroundColor: COLORS.primary
+    // },
     footer: {
         flex: 4,
         // justifyContent: 'center',
