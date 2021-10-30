@@ -1,24 +1,38 @@
 {
   "files": {
-    "app.js": "/assessment/static/js/app.a57d9f58.chunk.js",
-    "app.js.map": "/assessment/static/js/app.a57d9f58.chunk.js.map",
+    "app.js": "/assessment/static/js/app.704e31f5.chunk.js",
+    "app.js.map": "/assessment/static/js/app.704e31f5.chunk.js.map",
     "runtime~app.js": "/assessment/static/js/runtime~app.34b6b7dd.js",
     "runtime~app.js.map": "/assessment/static/js/runtime~app.34b6b7dd.js.map",
-    "static/js/2.a02e216f.chunk.js": "/assessment/static/js/2.a02e216f.chunk.js",
-    "static/js/2.a02e216f.chunk.js.map": "/assessment/static/js/2.a02e216f.chunk.js.map",
+    "static/js/2.bd38c61e.chunk.js": "/assessment/static/js/2.bd38c61e.chunk.js",
+    "static/js/2.bd38c61e.chunk.js.map": "/assessment/static/js/2.bd38c61e.chunk.js.map",
+    "fonts/AntDesign.ttf": "/assessment/./fonts/AntDesign.ttf",
+    "fonts/Entypo.ttf": "/assessment/./fonts/Entypo.ttf",
+    "fonts/Feather.ttf": "/assessment/./fonts/Feather.ttf",
     "fonts/FontAwesome.ttf": "/assessment/./fonts/FontAwesome.ttf",
+    "fonts/FontAwesome5_Brands.ttf": "/assessment/./fonts/FontAwesome5_Brands.ttf",
+    "fonts/FontAwesome5_Solid.ttf": "/assessment/./fonts/FontAwesome5_Solid.ttf",
+    "fonts/Fontisto.ttf": "/assessment/./fonts/Fontisto.ttf",
+    "fonts/Foundation.ttf": "/assessment/./fonts/Foundation.ttf",
+    "fonts/Ionicons.ttf": "/assessment/./fonts/Ionicons.ttf",
     "fonts/MaterialCommunityIcons.ttf": "/assessment/./fonts/MaterialCommunityIcons.ttf",
+    "fonts/MaterialIcons.ttf": "/assessment/./fonts/MaterialIcons.ttf",
+    "fonts/SimpleLineIcons.ttf": "/assessment/./fonts/SimpleLineIcons.ttf",
     "favicon-16.png": "/assessment/favicon-16.png",
     "favicon-32.png": "/assessment/favicon-32.png",
     "favicon.ico": "/assessment/favicon.ico",
     "index.html": "/assessment/index.html",
     "manifest.json": "/assessment/manifest.json",
     "serve.json": "/assessment/serve.json",
-    "static/js/2.a02e216f.chunk.js.LICENSE.txt": "/assessment/static/js/2.a02e216f.chunk.js.LICENSE.txt"
+    "static/js/2.bd38c61e.chunk.js.LICENSE.txt": "/assessment/static/js/2.bd38c61e.chunk.js.LICENSE.txt",
+    "static/media/bell.png": "/assessment/static/media/bell.cf04af27.png",
+    "static/media/heart.png": "/assessment/static/media/heart.23b5c2c0.png",
+    "static/media/rocket.png": "/assessment/static/media/rocket.d2f3bf41.png",
+    "static/media/star.png": "/assessment/static/media/star.69c71386.png"
   },
   "entrypoints": [
     "static/js/runtime~app.34b6b7dd.js",
-    "static/js/2.a02e216f.chunk.js",
-    "static/js/app.a57d9f58.chunk.js"
+    "static/js/2.bd38c61e.chunk.js",
+    "static/js/app.704e31f5.chunk.js"
   ]
 }
