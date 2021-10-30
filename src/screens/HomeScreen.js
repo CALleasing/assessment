@@ -25,18 +25,23 @@ const HomeScreen = ({ navigation, route }) => {
     const list = [
         {
             id: 1,
-            iconName: 'address-card',
+            iconName: 'tasks',
             detail: "ทำแบบประเมิน"
         },
-        // {
-        //     id: 2,
-        //     iconName: 'question-circle',
-        //     detail: "สร้างคำถาม"
-        // },
+        {
+            id: 4,
+            iconName: 'users',
+            detail: "ความเห็นถึง ผจก."
+        },
         {
             id: 2,
             iconName: 'check-square',
             detail: "ดูคำตอบทุกคน"
+        },
+        {
+            id: 3,
+            iconName: 'question-circle',
+            detail: "ตั้งคำถาม"
         }
     ]
 
@@ -63,14 +68,21 @@ const HomeScreen = ({ navigation, route }) => {
                         {
                             console.log(item.id);
                             console.log(position);
-                            item.id === 1 ?
-                                navigation.navigate('Assessment', { item: item.id })
-
-                                :
-
-                                position === 'admin' || position === 'ผู้จัดการ' ?
+                            switch (item.id) {
+                                case 1: navigation.navigate('Assessment', { item: item.id });
+                                    break;
+                                case 2: position === 'admin' || position === 'ผู้จัดการ' ?
                                     navigation.navigate('Assessment', { item: item.id }) :
                                     setDialogAdmin(true);
+                                    break;
+                                case 3: position === 'admin' ?
+                                    navigation.navigate('Assessment', { item: item.id }) :
+                                    setDialogAdmin(true);
+                                    break;
+                                case 4: navigation.navigate('Assessment', { item: item.id });
+                                    break;
+                                default: break;
+                            }
                         }
 
                     }} >
@@ -83,7 +95,7 @@ const HomeScreen = ({ navigation, route }) => {
                             marginTop: 8,
                             marginBottom: 4,
                             color: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.black,
-                            ...FONTS.body2
+                            ...FONTS.body3
                         }}
                     >
                         {item.detail}
@@ -121,11 +133,11 @@ const HomeScreen = ({ navigation, route }) => {
                     colors={[COLORS.primary, COLORS.primary]} >
                     <Text style={styles.text_header}>แบบประเมิน</Text>
                 </LinearGradient>
-                <View style={{marginTop: 16,alignSelf:'center', justifyContent: 'center' }}>
-                    <Text style={{fontSize: 18, color: 'green'}}>
-                        สวัสดีคุณ : {USER.name} {USER.lastname}  ( {USER.department} )
+                {/* <View style={{ marginTop: 16, alignSelf: 'center', justifyContent: 'center' }}> */}
+                    <Text style={{margin:16, alignSelf: 'center', fontSize: 16, color: 'green' }}>
+                        สวัสดีคุณ : {USER.name} {USER.lastname}  ({USER.department})
                     </Text>
-                </View>
+                {/* </View> */}
                 <View>
                     {renderMenuItem({ navigation })}
                 </View>

@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, SafeAreaView, FlatList, Platform, ActivityIndicator, ScrollView } from 'react-native';
 import { Button, Card } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { WebView } from 'react-native-webview';
-import { Video, Audio } from 'expo-av';
-
+import { useFocusEffect } from '@react-navigation/native';
 // import Dialog from "react-native-dialog";
 import axiox from 'axios';
 import { COLORS, SIZES } from '../constants/theme';
@@ -12,7 +9,7 @@ import { COLORS, SIZES } from '../constants/theme';
 import moment from 'moment';
 import 'moment/locale/th';
 
-import { USER } from '../constants/variables';
+import { MAIN_URL, USER } from '../constants/variables';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 
@@ -33,23 +30,19 @@ const ManagerQuestionnaireScreen = ({ navigation, route }) => {
 
     // Answer
     const [managerAnswer, setManagerAnswer] = useState([]);
-    const [isAnswerError, setAnserError] = useState(false);
 
     // VideoURL
     const [isEditVideo, setIsEditVideo] = useState(false);
 
     const [isLoading, setLoading] = useState(false);
-    const [dialogConfirmAns, setDialogConfirmAns] = useState(false);
-
-    const [titleTextLog, setTitleTextLog] = useState("");
-    const [bodyTextLog, setBodyTextLog] = useState("");
 
     var managerAnswerList = [];
 
-    const getManagerAssessmentList = () => {
-        axiox.get('https://program-api.herokuapp.com/' + year + '/' + part + '/manager/' + userId)
-            .then(res => {
-                setManagerList(res.data);
+    const getManagerList = () => {
+        axiox.get(MAIN_URL + '/answer/manager/' + year + '/' + part + '/' + userId)
+            .then(resManager => {
+                setManagerList(resManager.data);
+                console.log(resManager.data);
                 setLoading(false);
             })
             .catch(err => {
@@ -59,8 +52,7 @@ const ManagerQuestionnaireScreen = ({ navigation, route }) => {
 
     const postAnswer = () => {
         setLoading(true);
-        
-        axiox.post('https://program-api.herokuapp.com/' + year + '/' + part + '/' + answer.number + '/Answer/manager/' + userId, answer)
+        axiox.post(MAIN_URL + '/answer/manager/' + year + '/' + part + '/' + userId + '/' + answer.number, answer)
             // console.log('https://program-api.herokuapp.com/' + year + '/' + part + '/' + answer.questionNumber + '/Answer/officer/' + userId, answer)
             .then(res => {
                 console.log(res.data);
@@ -75,31 +67,20 @@ const ManagerQuestionnaireScreen = ({ navigation, route }) => {
             });
     }
 
-    const updateAnswer = () => {
-        setLoading(true);
-        console.log(answer);
-        axiox
-            .put('https://program-api.herokuapp.com/' + year + '/' + part + '/' + answer.number + '/Answer/manager/' + userId, answer)
-            .then(res => {
-                console.log("response: ", res)
-                alert("บันทึกข้อมูลสำเร็จ");
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error(err)
-                alert("บันทึกข้อมูลล้มเหลว กรุณาลองใหม่");
-                setLoading(false);
-            })
-    }
+    useFocusEffect(
+        React.useCallback(() => {
+            return () => {
+                setLoading(true);
+                getManagerList();
+            }
+        }, [])
+    );
 
+    // useEffect(() => {
+    //     setLoading(true);
+    //     getManagerList();
+    // }, []);
 
-    useEffect(() => {
-        setLoading(true);
-        getManagerAssessmentList();
-
-    }, []);
-
-    // Manager API
 
     const renderQuestionnaireManager = ({ navigation }) => {
 
@@ -130,7 +111,7 @@ const ManagerQuestionnaireScreen = ({ navigation, route }) => {
                         item.answer === undefined ?
                             <View>
                                 <TextInput
-                                    style={{ borderWidth: 1, borderRadius: 5, padding: 10, marginVertical: 8, height: 100 }}
+                                    style={{ borderWidth: 1, borderRadius: 5, padding: 10, marginVertical: 8, height: 150 }}
                                     // textContentType='telephoneNumber'
                                     placeholder="คำตอบ"
                                     placeholderTextColor="gray"
@@ -196,7 +177,7 @@ const ManagerQuestionnaireScreen = ({ navigation, route }) => {
 
                             <View>
                                 <TextInput
-                                    style={{ borderWidth: 1, borderRadius: 5, padding: 10, marginVertical: 8, height: 100 }}
+                                    style={{ borderWidth: 1, borderRadius: 5, padding: 10, marginVertical: 8, height: 150 }}
                                     // textContentType='telephoneNumber'
                                     placeholder="คำตอบ"
                                     placeholderTextColor="gray"
@@ -237,7 +218,7 @@ const ManagerQuestionnaireScreen = ({ navigation, route }) => {
                                             // setDialogAnswer(false);
                                             // setAnserError(false);
                                             answer = answerObject;
-                                            updateAnswer();
+                                            postAnswer();
 
                                             item.answer = managerAnswer[index];
 
@@ -289,10 +270,11 @@ const ManagerQuestionnaireScreen = ({ navigation, route }) => {
                     marginTop: 48
                 }}>
                     <Text style={{
+                        paddingHorizontal: 16,
                         fontSize: 24,
                         color: 'red',
                         justifyContent: 'center',
-                    }}>ไม่พบแบบประเมิน</Text>
+                    }}>หากแบบประเมินไม่ขึ้นให้เลือกทั่วไปก่อน และกลับมาเลือกผู้จัดการอีกครั้ง</Text>
                 </View>
             );
 
@@ -425,32 +407,6 @@ const ManagerQuestionnaireScreen = ({ navigation, route }) => {
 
                 </View>
             }
-{/* 
-            <AwesomeAlert
-                show={dialogConfirmAns}
-                title={titleTextLog}
-                message={bodyTextLog}
-                closeOnTouchOutside={false}
-                confirmText="ตกลง"
-                showConfirmButton={true}
-                confirmButtonColor={COLORS.primary}
-                onConfirmPressed={() => {
-                    setDialogConfirmAns(false);
-                }}
-            /> */}
-
-            {/* <Dialog.Container visible={dialogConfirmAns}>
-                <Dialog.Title style={{ fontSize: 20, fontWeight: 'bold' }}>{titleTextLog}</Dialog.Title>
-                <Dialog.Description style={{ fontSize: 18, padding: 16 }}>{bodyTextLog}</Dialog.Description>
-
-                <Dialog.Button
-                    label="ตกลง"
-                    onPress={() => {
-
-                        setDialogConfirmAns(false);
-                    }} />
-
-            </Dialog.Container> */}
 
             <AwesomeAlert
                 show={isEditVideo}
@@ -481,92 +437,18 @@ const ManagerQuestionnaireScreen = ({ navigation, route }) => {
                     }
                     console.log(currentObject);
                     {
-                        managerList[0].videoURL === undefined ?
-                            axiox.post('https://program-api.herokuapp.com/' + year + '/' + part + '/1/Answer/manager/' + userId, currentObject)
-                                .then(res => {
-                                    console.log(res.data);
-                                })
-                                .catch(err => {
-                                    console.log(err)
-                                })
-                            :
-                            axiox.put('https://program-api.herokuapp.com/' + year + '/' + part + '/1/Answer/manager/' + userId, currentObject)
-                                .then(res => {
-                                    // storeData(res.data)
-                                    console.log(res.data);
-
-                                })
-                                .catch(err => {
-                                    console.log(err)
-                                });
+                        axiox.post(MAIN_URL + '/answer/manager/' + year + '/' + part + '/' + userId + '/1', currentObject)
+                            .then(res => {
+                                console.log(res.data);
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            })
                     }
                     setIsEditVideo(false);
                 }}
             >
             </AwesomeAlert>
-
-            {/* <Dialog.Container visible={isEditVideo}>
-                <Dialog.Title style={{ fontSize: 20, fontWeight: 'bold' }}>เพิ่มลิ้งค์วิดีโอ</Dialog.Title>
-                <TextInput
-                    style={{ borderWidth: 1, borderRadius: 5, padding: 10, marginHorizontal: 16 }}
-                    // textContentType='telephoneNumber'
-                    placeholder=":url"
-                    placeholderTextColor="gray"
-                    multiline
-                    numberOfLines={6}
-                    color='blue'
-                    fontSize={16}
-                    onChangeText={text => {
-                        // setAnserError(false);
-                        // setVideoLink(text)
-                        managerList[0].videoURL = text
-                    }}
-                />
-                <Dialog.Button
-                    label="ยกเลิก"
-                    onPress={() => {
-                        setIsEditVideo(false);
-                    }} />
-
-                <Dialog.Button
-                    label="ตกลง"
-                    onPress={() => {
-                        const currentObject = {
-                            userid: managerList[0].userid,
-                            year: managerList[0].year,
-                            number: managerList[0].number,
-                            qt: managerList[0].qt,
-                            answer: managerList[0].answer,
-                            videoURL: managerList[0].videoURL,
-                            date: moment(managerList[0].date).format('yyyy-MM-DD'),
-
-                        }
-                        console.log(currentObject);
-                        {
-                            managerList[0].videoURL === undefined ?
-                                axiox.post('https://program-api.herokuapp.com/' + year + '/' + part + '/1/Answer/manager/' + userId, currentObject)
-                                    .then(res => {
-                                        console.log(res.data);
-                                    })
-                                    .catch(err => {
-                                        console.log(err)
-                                    })
-                                :
-                                axiox.put('https://program-api.herokuapp.com/' + year + '/' + part + '/1/Answer/manager/' + userId, currentObject)
-                                    .then(res => {
-                                        // storeData(res.data)
-                                        console.log(res.data);
-
-                                    })
-                                    .catch(err => {
-                                        console.log(err)
-                                    });
-                        }
-                        setIsEditVideo(false);
-                    }} />
-
-
-            </Dialog.Container> */}
 
             {isLoading ?
 

@@ -6,8 +6,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import axiox from 'axios';
 import { MAIN_URL, USER } from '../constants/variables';
 
-const UserListScreen = ({ navigation, route }) => {
-
+const ManagerListScreen = ({ navigation, route }) => {
     let sheetID = route.params.sheetID;
     let year = route.params.year;
     let part = route.params.part;
@@ -18,82 +17,25 @@ const UserListScreen = ({ navigation, route }) => {
     const [users, setUsers] = useState([]);
     const [isLoading, setLoading] = useState(false);
 
-    const [arrayholder, setArrayholder] = useState([])
-    const [text, setText] = useState("");
-    // const[data, setData] = useState([])
-
-
-    const getAllQuestion = () => {
-        setLoading(true);
-        axiox.get(MAIN_URL + '/question/staff/' + year + '/' + part)
-            .then(res => {
-                getUsers(res.data.length);
-            })
-            .catch(err => {
-                console.log(err)
-                setLoading(false);
-            });
-    };
-
-    const getUsers = (choiceCount) => {
-        // console.log(choiceCount);
-        axiox.get(MAIN_URL + '/users/' + year + '/' + part + '/' + choiceCount)
-            .then(res => {
-                setUsers(res.data);
-                setLoading(false);
-                setArrayholder(res.data)
-                // console.log(users);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    };
-
-    const getDepartment = () => {
-        console.log(department);
-        // console.log(MAIN_URL + '/users/department/' + department);
-        axiox.get(MAIN_URL + '/users/department/' + department)
-            .then(res => {
-                setUsers(res.data);
-                setLoading(false);
-                setArrayholder(res.data)
-                // console.log(users);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    };
-
     useEffect(() => {
         setLoading(true);
-        position === 'admin' ? getAllQuestion() : getDepartment();
+        getManagerList();
 
     }, []);
 
-    const searchData = (text) => {
-
-        const newData = arrayholder.filter(item => {
-            // console.log(item.nickname)
-            const itemData = item.nickname;
-            const textData = text;
-            return itemData.indexOf(textData) > -1
-        });
-        setUsers(newData);
-        setText(text);
-    }
-
-    // const itemSeparator = () => {
-    //     return (
-    //         <View
-    //             style={{
-    //                 height: .5,
-    //                 width: "100%",
-    //                 backgroundColor: "#000",
-    //             }}
-    //         />
-    //     );
-    // }
-
+    const getManagerList = () => {
+        // console.log(MAIN_URL + '/users/position/ผู้จัดการ');
+        axiox.get(MAIN_URL + '/users/position/ผู้จัดการ')
+            .then(res => {
+                setUsers(res.data);
+                setLoading(false);
+                // setArrayholder(res.data)
+                // console.log(users);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    };
 
     const renderUsers = ({ navigation }) => {
 
@@ -103,10 +45,11 @@ const UserListScreen = ({ navigation, route }) => {
             return (
                 <TouchableOpacity
                     onPress={() => {
-                        console.log(item.name);
-                        navigation.navigate('Questionnaire', {
+                        // console.log(item);
+                        // console.log(USER)
+                        navigation.navigate('StaffComment', {
                             sheetID: sheetID,
-                            userId: item.userid,
+                            managerID: item.userid,
                             year: year,
                             part: part
                         });
@@ -146,19 +89,19 @@ const UserListScreen = ({ navigation, route }) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
 
-            <TextInput
+            {/* <TextInput
                 style={styles.textInput}
                 onChangeText={(text) => searchData(text)}
                 value={text}
                 underlineColorAndroid='transparent'
-                placeholder="ค้นหาจากชื่อเล่น" />
+                placeholder="ค้นหาจากชื่อเล่น" /> */}
 
-            {position === 'admin' ?
+            {/* {position === 'admin' ?
                 <View style={{ borderBottomWidth: 0.5, borderBottomColor: 'gray' }}>
                     <Text style={{ marginHorizontal: 8, marginBottom: 8, }}>จำนวนคนตอบคำถามครบ {users.length} คน</Text>
                 </View>
                 :
-                null}
+                null} */}
 
 
             {renderUsers({ navigation })}
@@ -182,19 +125,6 @@ const UserListScreen = ({ navigation, route }) => {
         </SafeAreaView>
 
     );
-}
+};
 
-const styles = StyleSheet.create({
-    textInput: {
-        margin: 8,
-        paddingHorizontal: 16,
-        height: 42,
-        borderWidth: 1,
-        borderColor: '#009688',
-        borderRadius: 8,
-        backgroundColor: "#FFFF"
-
-    }
-});
-
-export default UserListScreen;
+export default ManagerListScreen;

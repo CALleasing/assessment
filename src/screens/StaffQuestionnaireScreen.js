@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, SafeAreaView, FlatList, Linking, StyleSheet, Platform, ActivityIndicator, ScrollView } from 'react-native';
+import { View, Text, TextInput, SafeAreaView, FlatList, StyleSheet, Platform, ActivityIndicator, ScrollView } from 'react-native';
 import { Button, Card } from 'react-native-paper';
+import { useFocusEffect } from '@react-navigation/native';
 // import { FlatList } from 'react-native-gesture-handler';
 // import Dialog from "react-native-dialog";
 import axiox from 'axios';
 import { COLORS, SIZES } from '../constants/theme';
-import { USER } from '../constants/variables';
+import { MAIN_URL, USER } from '../constants/variables';
 import moment from 'moment';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
@@ -14,35 +15,30 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
     // console.log(route);
 
     let sheetID = route.params.sheetID;
-    let userId = route.params.userId;
+    const userId = route.params.userId;
     // console.log(userId);
     const year = route.params.year;
     const part = route.params.part;
 
     var answer = {};
 
-    const [staffAssessmentList, setStaffAssessmentList] = useState([]);
+    const [answerStaff, setAnswerStaff] = useState([]);
 
     const [isLoading, setLoading] = useState(false);
-    const [dialogConfirmAns, setDialogConfirmAns] = useState(false);
     // const [dialogURL, setDialogURL] = useState(false);
 
     // Answer
     const [staffAnswer, setStaffAnswer] = useState([]);
     // Video URL
     const [isEditVideo, setIsEditVideo] = useState(false);
-    const [isAnswerError, setAnserError] = useState(false);
-
-    const [titleTextLog, setTitleTextLog] = useState("");
-    const [bodyTextLog, setBodyTextLog] = useState("");
 
     // var checkStaffAnswer = [];
     var staffAnswerList = [];
 
-    const getStaffAssessmentList = () => {
-        axiox.get('https://program-api.herokuapp.com/' + year + '/' + part + '/officer/' + userId)
-            .then(res => {
-                setStaffAssessmentList(res.data);
+    const getStaff = () => {
+        axiox.get(MAIN_URL + '/answer/staff/' + year + '/' + part + '/' + userId)
+            .then(resStaff => {
+                setAnswerStaff(resStaff.data);
                 setLoading(false);
             })
             .catch(err => {
@@ -52,8 +48,7 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
 
     const postAnswer = () => {
         setLoading(true);
-        axiox.post('https://program-api.herokuapp.com/' + year + '/' + part + '/' + answer.number + '/Answer/officer/' + userId, answer)
-            // console.log('https://program-api.herokuapp.com/' + year + '/' + part + '/' + answer.questionNumber + '/Answer/officer/' + userId, answer)
+        axiox.post(MAIN_URL + '/answer/staff/' + year + '/' + part + '/' + userId + '/' + answer.number, answer)
             .then(res => {
                 console.log(res.data);
 
@@ -62,35 +57,20 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
             })
             .catch(err => {
                 console.log(err);
-                // setTitleTextLog("บันทึกล้มเหลว");
-                // setBodyTextLog("กรุณาส่งคำตอบใหม่ใหม่อีกครั้ง");
-                // setDialogConfirmAns(true);
-
                 alert("บันทึกข้อมูลล้มเหลว กรุณาลองใหม่");
                 setLoading(false);
             });
     }
 
-    const updateAnswer = () => {
-        setLoading(true);
-        axiox
-            .put('https://program-api.herokuapp.com/' + year + '/' + part + '/' + answer.number + '/Answer/officer/' + userId, answer)
-            .then(res => {
-                console.log("response: ", res)
-
-                alert("บันทึกข้อมูลสำเร็จ");
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error(err);
-                alert("บันทึกข้อมูลล้มเหลว กรุณาลองใหม่");
-                setLoading(false);
-            })
-    }
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         return () => getStaff();
+    //     }, [])
+    // );
 
     useEffect(() => {
         setLoading(true);
-        getStaffAssessmentList();
+        getStaff();
     }, []);
 
     const renderQuestionnaireAllStaff = ({ navigation }) => {
@@ -119,12 +99,13 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
                         item.answer === undefined ?
                             <View>
                                 <TextInput
-                                    style={{ borderWidth: 1, borderRadius: 5, padding: 10, marginVertical: 8, height: 100 }}
+                                    style={{ borderWidth: 1, borderRadius: 5, padding: 10, marginVertical: 8, height: 150 }}
                                     // textContentType='telephoneNumber'
                                     placeholder="คำตอบ"
                                     placeholderTextColor="gray"
                                     multiline
-                                    numberOfLines={6}
+                                    // blurOnSubmit={true}
+                                    // numberOfLines={6}
                                     color='blue'
                                     fontSize={16}
                                     onChangeText={text => {
@@ -177,12 +158,13 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
 
                             <View>
                                 <TextInput
-                                    style={{ borderWidth: 1, borderRadius: 5, padding: 10, marginVertical: 8, height: 100 }}
+                                    style={{ borderWidth: 1, borderRadius: 5, padding: 10, marginVertical: 8, height: 150 }}
                                     // textContentType='telephoneNumber'
                                     placeholder="คำตอบ"
                                     placeholderTextColor="gray"
                                     multiline
-                                    numberOfLines={6}
+                                    // blurOnSubmit={true}
+                                    // numberOfLines={6}
                                     color='blue'
                                     fontSize={16}
                                     onChangeText={text => {
@@ -213,7 +195,7 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
 
                                             answer = answerObject;
 
-                                            updateAnswer();
+                                            postAnswer();
 
                                             item.answer = staffAnswer[index];
                                         }
@@ -247,7 +229,7 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
             );
         }
 
-        if (isLoading === false && staffAssessmentList.length === 0) {
+        if (isLoading === false && answerStaff.length === 0) {
             return (
                 <View style={{
                     alignItems: 'center',
@@ -264,8 +246,8 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
             return (
 
                 <FlatList
-                    data={staffAssessmentList}
-                    extraData={staffAssessmentList}
+                    data={answerStaff}
+                    extraData={answerStaff}
                     keyExtractor={(item, index) => `${index}`}
                     renderItem={renderItem}
                     ListHeaderComponent={() => {
@@ -283,8 +265,6 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
                     }}
                     stickyHeaderIndices={[0]}
                 />
-
-
             );
         }
 
@@ -303,7 +283,7 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
             onChangeText={text => {
                 // setAnserError(false);
                 // setVideoLink(text)
-                staffAssessmentList[0].videoURL = text
+                answerStaff[0].videoURL = text
             }}
         />
     )
@@ -313,13 +293,10 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
     return (
         <SafeAreaView style={{ flex: 1 }}>
 
-            {/* <View style={{ flex: 3, }}> */}
             {renderQuestionnaireAllStaff({ navigation })}
-            {/* {SIZES.width > 900 ? <View style={{ width: 600 }}>{ }</View> : null} */}
-            {/* </View> */}
 
             {sheetID === 1 ?
-                staffAssessmentList.length != 0 && (staffAssessmentList[0].videoURL === undefined || staffAssessmentList[0].videoURL === "") ?
+                answerStaff.length != 0 && (answerStaff[0].videoURL === undefined || answerStaff[0].videoURL === "") ?
 
                     <View style={{ margin: 16 }}>
                         <Button style={{
@@ -334,7 +311,7 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
                     </View>
 
                     :
-                    staffAssessmentList.length != 0 && staffAssessmentList[0].videoURL != "" ?
+                    answerStaff.length != 0 && answerStaff[0].videoURL != "" ?
                         <View style={{ margin: 16, flexDirection: 'row', justifyContent: 'center' }}>
                             <Button style={{
                                 flex: 1,
@@ -349,8 +326,8 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
                                     // console.log(questionAllStaffList[0].videoURL);
                                     {
                                         Platform.OS === "web" ?
-                                            window.open(staffAssessmentList[0].videoURL) :
-                                            navigation.navigate('VideoWebView', { videoURL: staffAssessmentList[0].videoURL })
+                                            window.open(answerStaff[0].videoURL) :
+                                            navigation.navigate('VideoWebView', { videoURL: answerStaff[0].videoURL })
                                     }
 
 
@@ -387,7 +364,7 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
                         mode="Contained"
                         onPress={() => {
                             // console.log(questionManagerList[0].videoURL);
-                            navigation.navigate('VideoWebView', { videoURL: staffAssessmentList[0].videoURL })
+                            navigation.navigate('VideoWebView', { videoURL: answerStaff[0].videoURL })
 
                         }}>
                         <Text style={{ alignSelf: 'center', color: 'white' }}>ดูวิดีโอ</Text>
@@ -395,53 +372,6 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
 
                 </View>
             }
-
-            {/* <AwesomeAlert
-                show={dialogConfirmAns}
-                showProgress={false}
-                title="AwesomeAlert"
-                message="I have a message for you!"
-                closeOnTouchOutside={true}
-                closeOnHardwareBackPress={false}
-                showCancelButton={true}
-                showConfirmButton={true}
-                cancelText="ยกเลิก"
-                confirmText="ตกลง"
-                confirmButtonColor="#DD6B55"
-                onCancelPressed={() => {
-                    setDialogConfirmAns(false);
-                }}
-                onConfirmPressed={() => {
-                    setDialogConfirmAns(false);
-                }}
-            /> */}
-
-
-{/* 
-            <AwesomeAlert
-                show={dialogConfirmAns}
-                title={titleTextLog}
-                message={bodyTextLog}
-                closeOnTouchOutside={false}
-                confirmText="ตกลง"
-                showConfirmButton={true}
-                confirmButtonColor={COLORS.primary}
-                onConfirmPressed={() => {
-                    setDialogConfirmAns(false);
-                }}
-            /> */}
-
-            {/* <Dialog.Container visible={dialogConfirmAns}>
-                <Dialog.Title style={{ fontSize: 20, fontWeight: 'bold' }}>{titleTextLog}</Dialog.Title>
-                <Dialog.Description style={{ fontSize: 18, padding: 16 }}>{bodyTextLog}</Dialog.Description>
-
-                <Dialog.Button
-                    label="ตกลง"
-                    onPress={() => {
-                        setDialogConfirmAns(false);
-                    }} />
-
-            </Dialog.Container> */}
 
             <AwesomeAlert
                 show={isEditVideo}
@@ -461,104 +391,29 @@ const StaffQuestionnaireScreen = ({ navigation, route }) => {
                 onConfirmPressed={() => {
                     setIsEditVideo(false);
                     const currentObject = {
-                        userid: staffAssessmentList[0].userid,
-                        year: staffAssessmentList[0].year,
-                        number: staffAssessmentList[0].number,
-                        qt: staffAssessmentList[0].qt,
-                        answer: staffAssessmentList[0].answer,
-                        videoURL: staffAssessmentList[0].videoURL,
-                        date: moment(staffAssessmentList[0].date).format('yyyy-MM-DD'),
+                        userid: answerStaff[0].userid,
+                        year: answerStaff[0].year,
+                        number: answerStaff[0].number,
+                        qt: answerStaff[0].qt,
+                        answer: answerStaff[0].answer,
+                        videoURL: answerStaff[0].videoURL,
+                        date: moment(answerStaff[0].date).format('yyyy-MM-DD'),
 
                     }
                     console.log(currentObject);
                     {
-                        staffAssessmentList[0].videoURL === undefined ?
-                            axiox.post('https://program-api.herokuapp.com/' + year + '/' + part + '/1/Answer/officer/' + userId, currentObject)
-                                .then(res => {
-                                    console.log(res.data);
-                                })
-                                .catch(err => {
-                                    console.log(err)
-                                })
-                            :
-                            axiox.put('https://program-api.herokuapp.com/' + year + '/' + part + '/1/Answer/officer/' + userId, currentObject)
-                                .then(res => {
-                                    // storeData(res.data)
-                                    console.log(res.data);
-
-                                })
-                                .catch(err => {
-                                    console.log(err)
-                                });
+                        axiox.post(MAIN_URL + '/answer/staff/' + year + '/' + part + '/' + userId + '/1', currentObject)
+                            .then(res => {
+                                console.log(res.data);
+                            })
+                            .catch(err => {
+                                console.log(err)
+                            })
                     }
                     setIsEditVideo(false);
                 }}
             >
             </AwesomeAlert>
-
-            {/* <Dialog.Container visible={isEditVideo}>
-                <Dialog.Title style={{ fontSize: 20, fontWeight: 'bold' }}>เพิ่มลิ้งค์วิดีโอ</Dialog.Title>
-                <TextInput
-                    style={{ borderWidth: 1, borderRadius: 5, padding: 10, marginHorizontal: 16 }}
-                    // textContentType='telephoneNumber'
-                    placeholder=":url"
-                    placeholderTextColor="gray"
-                    multiline
-                    numberOfLines={6}
-                    color='blue'
-                    fontSize={16}
-                    onChangeText={text => {
-                        // setAnserError(false);
-                        // setVideoLink(text)
-                        staffAssessmentList[0].videoURL = text
-                    }}
-                />
-                <Dialog.Button
-                    label="ยกเลิก"
-                    onPress={() => {
-                        setIsEditVideo(false);
-                    }} />
-
-                <Dialog.Button
-                    label="ตกลง"
-                    onPress={() => {
-                        const currentObject = {
-                            userid: staffAssessmentList[0].userid,
-                            year: staffAssessmentList[0].year,
-                            number: staffAssessmentList[0].number,
-                            qt: staffAssessmentList[0].qt,
-                            answer: staffAssessmentList[0].answer,
-                            videoURL: staffAssessmentList[0].videoURL,
-                            date: moment(staffAssessmentList[0].date).format('yyyy-MM-DD'),
-
-                        }
-                        console.log(currentObject);
-                        {
-                            staffAssessmentList[0].videoURL === undefined ?
-                                axiox.post('https://program-api.herokuapp.com/' + year + '/' + part + '/1/Answer/officer/' + userId, currentObject)
-                                    .then(res => {
-                                        console.log(res.data);
-                                    })
-                                    .catch(err => {
-                                        console.log(err)
-                                    })
-                                :
-                                axiox.put('https://program-api.herokuapp.com/' + year + '/' + part + '/1/Answer/officer/' + userId, currentObject)
-                                    .then(res => {
-                                        // storeData(res.data)
-                                        console.log(res.data);
-
-                                    })
-                                    .catch(err => {
-                                        console.log(err)
-                                    });
-                        }
-                        setIsEditVideo(false);
-                    }} />
-
-
-            </Dialog.Container> */}
-
 
             {isLoading ?
 

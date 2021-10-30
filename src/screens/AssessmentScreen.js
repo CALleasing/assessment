@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, SafeAreaView, StyleSheet, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Card } from 'react-native-paper';
+import { Button, Card } from 'react-native-paper';
 import { FlatList } from 'react-native-gesture-handler';
 import * as Animatable from 'react-native-animatable';
 
 import moment from 'moment';
 import 'moment/locale/th';
-import { USER } from '../constants/variables';
+import { TYPE, USER } from '../constants/variables';
 
 const AssessmentScreen = ({ navigation, route }) => {
 
@@ -29,97 +29,159 @@ const AssessmentScreen = ({ navigation, route }) => {
         const renderItem = ({ item }) => {
             // if(checkDate != undefined && Object.entries(checkDate).length !== 0){
             return (
-                <View style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
-                    <TouchableOpacity
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                    <Button
+                        style={{
+                            backgroundColor: '#4682B4',
+                            borderRadius: 10,
+                            marginVertical: 8,
+                            padding: 8,
+                        }}
+                        mode="Contained"
                         onPress={() => {
-                            sheetID === 1 ? 
-                            navigation.navigate('Questionnaire',
-                            {
-                                userId: USER.userid,
-                                sheetID: sheetID,
-                                year: moment(item).format('yyyy'),
-                                part: 1
-                            } 
-                            )
+                            switch (sheetID) {
+                                case 1:
+                                    navigation.navigate('Questionnaire',
+                                        {
+                                            userId: USER.userid,
+                                            sheetID: sheetID,
+                                            year: moment(item).format('yyyy'),
+                                            part: 1
+                                        }
+                                    );
+                                    break;
 
-                            :
-                            navigation.navigate('UserList',
-                            {
-                                userId: null,
-                                sheetID: sheetID,
-                                year: moment(item).format('yyyy'),
-                                part: 1
-                            } 
-                            
-                            );
+                                case 2:
+                                    navigation.navigate('UserList',
+                                        {
+                                            userId: null,
+                                            sheetID: sheetID,
+                                            year: moment(item).format('yyyy'),
+                                            part: 1
+                                        }
+
+                                    );
+                                    break;
+                                case 3:
+                                    navigation.navigate('SelectQuestion',
+                                        {
+                                            userId: null,
+                                            sheetID: sheetID,
+                                            year: moment(item).format('yyyy'),
+                                            part: 1
+                                        }
+                                    );
+                                    break;
+                                case 4:
+                                    if (USER.position != 'ผู้จัดการ') {
+                                        navigation.navigate('ManagerList', {
+                                            userId: USER.userid,
+                                                sheetID: sheetID,
+                                                year: moment(item).format('yyyy'),
+                                                part: 1
+                                        })
+                                    }
+                                    else {
+                                        navigation.navigate('StaffComment',
+                                            {
+                                                userId: USER.userid,
+                                                sheetID: sheetID,
+                                                year: moment(item).format('yyyy'),
+                                                part: 1
+                                            }
+                                        )
+                                    }
+
+                                    break;
+                                default: break;
+                            }
+                        }} >
+
+                        <Text style={{
+                            color: 'white',
+                            fontSize: 24,
+                            fontStyle: 'italic',
+                            fontWeight: 'bold',
+                            alignSelf: 'center'
+                        }}>{moment(item).format('yyyy')}-1</Text>
+
+                    </Button>
+
+                    <Button
+                        style={{
+                            backgroundColor: '#2E8B57',
+                            borderRadius: 10,
+                            marginVertical: 8,
+                            padding: 8,
+                        }}
+                        mode="Contained"
+                        onPress={() => {
+                            switch (sheetID) {
+                                case 1:
+                                    navigation.navigate('Questionnaire',
+                                        {
+                                            userId: USER.userid,
+                                            sheetID: sheetID,
+                                            year: moment(item).format('yyyy'),
+                                            part: 2
+                                        }
+                                    );
+                                    break;
+
+                                case 2:
+                                    navigation.navigate('UserList',
+                                        {
+                                            userId: null,
+                                            sheetID: sheetID,
+                                            year: moment(item).format('yyyy'),
+                                            part: 2
+                                        }
+
+                                    );
+                                    break;
+                                case 3:
+                                    navigation.navigate('SelectQuestion',
+                                        {
+                                            userId: null,
+                                            sheetID: sheetID,
+                                            year: moment(item).format('yyyy'),
+                                            part: 2
+                                        }
+                                    );
+                                    break;
+                                case 4:
+                                    if (USER.position != 'ผู้จัดการ') {
+                                        navigation.navigate('ManagerList', {
+                                                userId: USER.userid,
+                                                sheetID: sheetID,
+                                                year: moment(item).format('yyyy'),
+                                                part: 2
+                                        })
+                                    }
+                                    else {
+                                        navigation.navigate('StaffComment',
+                                            {
+                                                userId: USER.userid,
+                                                sheetID: sheetID,
+                                                year: moment(item).format('yyyy'),
+                                                part: 2
+                                            }
+                                        )
+                                    };
+                                    break;
+                            }
                         }
                         }>
-                        <Card style={{
-                            width:140,
-                            marginTop: 16,
-                            // borderWidth: 1,
-                            borderRadius: 20,
-                            elevation: 5,
-                            // padding: 16,
-                            backgroundColor: '#E0FFFF'
-                            // borderColor: COLORS.primary
-                            // 
-                        }} >
-                            <Card.Content>
-                                <Text style={{
-                                    fontSize: 24,
-                                    fontStyle: 'italic',
-                                    fontWeight: 'bold',
-                                    alignSelf: 'center'
-                                }}>{moment(item).format('yyyy')}-1</Text>
-                            </Card.Content>
-                        </Card>
-                    </TouchableOpacity>
 
-                    <TouchableOpacity
-                        onPress={() => {
-                            sheetID === 1 ? 
-                            navigation.navigate('Questionnaire',
-                            {
-                                // userId: "test",
-                                userId: USER.userid,
-                                sheetID: sheetID,
-                                year: moment(item).format('yyyy'),
-                                part: 2
-                            }) 
-                            :
-                            navigation.navigate('UserList',
-                            {
-                                userId: null,
-                                sheetID: sheetID,
-                                year: moment(item).format('yyyy'),
-                                part: 2
-                            } 
-                            )
-                            ;
-                        }
-                        }>
-                        <Card style={{
-                            marginTop: 16,
-                            // borderWidth: 1,
-                            width:140,
-                            borderRadius: 20,
-                            elevation: 5,
-                            // padding: 16,
-                            backgroundColor: '#FAFAD2'
-                            // borderColor: COLORS.primary
-                            // 
-                        }} >
-                            <Card.Content>
-                                <Text style={{
-                                    fontSize: 24,
-                                    fontStyle: 'italic',
-                                    fontWeight: 'bold',
-                                    alignSelf: 'center'
-                                }}>{moment(item).format('yyyy')}-2</Text>
-                            </Card.Content>
-                        </Card>
-                    </TouchableOpacity>
+                        <Text style={{
+                            color: 'white',
+                            fontSize: 24,
+                            fontStyle: 'italic',
+                            fontWeight: 'bold',
+                            alignSelf: 'center'
+                        }}>{moment(item).format('yyyy')}-2</Text>
+
+                    </Button>
                 </View>
 
             );
@@ -137,8 +199,8 @@ const AssessmentScreen = ({ navigation, route }) => {
     }
 
     return (
-        <Animatable.View style={{ flex: 1 }}
-        animation='fadeIn'> 
+        <Animatable.View style={{ flex: 1, backgroundColor: 'white' }}
+            animation='fadeIn'>
             {renderYearList({ navigation })}
         </Animatable.View>
     );

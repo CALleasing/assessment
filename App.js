@@ -18,6 +18,10 @@ import { AuthContext } from './src/components/context';
 import RootStackScreen from './src/screens/RootStackScreen';
 import { COLORS } from './src/constants/theme';
 import UserListScreen from './src/screens/UserListScreen';
+import SelectQuestionScreen from './src/screens/SelectQuestionScreen';
+import CreateQuestionScreen from './src/screens/CreateQuestionScreen';
+import StaffCommentScreen from './src/screens/StaffCommentScreen';
+import ManagerListScreen from './src/screens/ManagerListScreen';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -144,9 +148,13 @@ const App = () => {
 
             <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'หน้าแรก', }} initialParams={{ userid: loginState.userToken }} />
             <Stack.Screen name="Assessment" component={AssessmentScreen} options={{ title: 'ปีประเมิน' }} />
+            <Stack.Screen name="ManagerList" component={ManagerListScreen} options={{ title: 'เลือกผู้จัดการ' }} />
+            <Stack.Screen name="SelectQuestion" component={SelectQuestionScreen} options={{ title: 'ตั้งคำถาม' }} />
+            <Stack.Screen name="CreateQuestion" component={CreateQuestionScreen} options={{ title: 'ตั้งคำถาม' }} />
             <Stack.Screen name="UserList" component={UserListScreen} options={{ title: 'รายชื่อ' }} />
             <Stack.Screen name="Questionnaire" component={Questionnaire} options={{ title: 'แบบประเมิน' }} />
             <Stack.Screen name="VideoWebView" component={VideoWebViewScreen} options={{ title: 'ดูวิดีโอ' }} />
+            <Stack.Screen name="StaffComment" component={StaffCommentScreen} options={{ title: 'ประเมินผู้จัดการ' }} />
           </Stack.Navigator>
         )
 

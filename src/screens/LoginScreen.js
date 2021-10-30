@@ -8,7 +8,7 @@ import axiox from 'axios';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { COLORS, SIZES } from '../constants/theme';
-import { USER } from '../constants/variables';
+import { MAIN_URL, USER } from '../constants/variables';
 
 const LoginScreen = ({ navigation }) => {
 
@@ -29,7 +29,7 @@ const LoginScreen = ({ navigation }) => {
             password: data.password
         }
 
-        axiox.post('https://program-api.herokuapp.com/login', object)
+        axiox.post(MAIN_URL + '/login', object)
             .then(res => {
                 console.log(res.data);
                 setIsLoading(false);
