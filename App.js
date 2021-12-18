@@ -22,6 +22,9 @@ import SelectQuestionScreen from './src/screens/SelectQuestionScreen';
 import CreateQuestionScreen from './src/screens/CreateQuestionScreen';
 import StaffCommentScreen from './src/screens/StaffCommentScreen';
 import ManagerListScreen from './src/screens/ManagerListScreen';
+import EmployeeStatusSelectScreen from './src/screens/EmployeeStatusSelectScreen';
+import EmployeeStatusScreen from './src/screens/EmployeeStatusScreen';
+import EmployeeStatusCommentScreen from './src/screens/EmployeeStatusCommentScreen';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -153,8 +156,11 @@ const App = () => {
             <Stack.Screen name="CreateQuestion" component={CreateQuestionScreen} options={{ title: 'ตั้งคำถาม' }} />
             <Stack.Screen name="UserList" component={UserListScreen} options={{ title: 'รายชื่อ' }} />
             <Stack.Screen name="Questionnaire" component={Questionnaire} options={{ title: 'แบบประเมิน' }} />
+            <Stack.Screen name="EmployeeStatusSelect" component={EmployeeStatusSelectScreen} options={{ title: 'ประเมินสถานะพนักงาน' }} />
+            <Stack.Screen name="EmployeeStatusComment" component={EmployeeStatusCommentScreen} options={{ title: 'ความเห็นผู้จัดการ' }} />
+            <Stack.Screen name="EmployeeStatus" component={EmployeeStatusScreen} options={{ title: 'ประเมินสถานะพนักงาน' }} />
             <Stack.Screen name="VideoWebView" component={VideoWebViewScreen} options={{ title: 'ดูวิดีโอ' }} />
-            <Stack.Screen name="StaffComment" component={StaffCommentScreen} options={{ title: 'ประเมินผู้จัดการ' }} />
+            <Stack.Screen name="StaffComment" component={StaffCommentScreen} options={{ title: 'ความคิดเห็น' }} />
           </Stack.Navigator>
         )
 

@@ -76,9 +76,9 @@ const AssessmentScreen = ({ navigation, route }) => {
                                     if (USER.position != 'ผู้จัดการ') {
                                         navigation.navigate('ManagerList', {
                                             userId: USER.userid,
-                                                sheetID: sheetID,
-                                                year: moment(item).format('yyyy'),
-                                                part: 1
+                                            sheetID: sheetID,
+                                            year: moment(item).format('yyyy'),
+                                            part: 1
                                         })
                                     }
                                     else {
@@ -152,10 +152,10 @@ const AssessmentScreen = ({ navigation, route }) => {
                                 case 4:
                                     if (USER.position != 'ผู้จัดการ') {
                                         navigation.navigate('ManagerList', {
-                                                userId: USER.userid,
-                                                sheetID: sheetID,
-                                                year: moment(item).format('yyyy'),
-                                                part: 2
+                                            userId: USER.userid,
+                                            sheetID: sheetID,
+                                            year: moment(item).format('yyyy'),
+                                            part: 2
                                         })
                                     }
                                     else {
@@ -169,6 +169,7 @@ const AssessmentScreen = ({ navigation, route }) => {
                                         )
                                     };
                                     break;
+                                default: break;
                             }
                         }
                         }>

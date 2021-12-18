@@ -66,7 +66,18 @@ const UserListScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         setLoading(true);
-        position === 'admin' ? getAllQuestion() : getDepartment();
+        if (sheetID === 5) {
+            getDepartment();
+        }
+        else {
+            if (position === 'admin' || department === 'MD') {
+                getAllQuestion();
+            } else {
+                getDepartment();
+            }
+        }
+
+
 
     }, []);
 
@@ -103,15 +114,20 @@ const UserListScreen = ({ navigation, route }) => {
             return (
                 <TouchableOpacity
                     onPress={() => {
-                        console.log(item.name);
-                        navigation.navigate('Questionnaire', {
-                            sheetID: sheetID,
-                            userId: item.userid,
-                            year: year,
-                            part: part
-                        });
+                        sheetID === 5 ?
+                            navigation.navigate('EmployeeStatus', {
+                                sheetID: sheetID,
+                                user: item
+                            }) :
+                            // console.log(item.name);
+                            navigation.navigate('Questionnaire', {
+                                sheetID: sheetID,
+                                userId: item.userid,
+                                year: year,
+                                part: part
+                            });
                     }}>
-                    <View style={{backgroundColor: 'white', borderWidth: 0.5, padding: 8, borderRadius: 10, margin: 4 }}>
+                    <View style={{ backgroundColor: 'white', borderWidth: 0.5, padding: 8, borderRadius: 10, margin: 4 }}>
                         <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'blue' }}>
                             ชื่อ : {item.name + " " + item.lastname}
                         </Text>

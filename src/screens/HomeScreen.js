@@ -26,27 +26,37 @@ const HomeScreen = ({ navigation, route }) => {
         {
             id: 1,
             iconName: 'tasks',
-            detail: "ทำแบบประเมิน"
+            detail: "ทำแบบประเมิน",
+            position: "พนักงานและ ผจก."
         },
         {
             id: 4,
             iconName: 'users',
-            detail: "ความเห็นถึง ผจก."
+            detail: "ความเห็นถึง ผจก.",
+            position: "พนักงานและ ผจก."
         },
         {
             id: 2,
             iconName: 'check-square',
-            detail: "ดูคำตอบทุกคน"
+            detail: "ดูคำตอบทุกคน",
+            position: "ผู้จัดการ"
         },
         {
             id: 3,
             iconName: 'question-circle',
-            detail: "ตั้งคำถาม"
-        }
+            detail: "ตั้งคำถาม",
+            position: "admin",
+        },
+        {
+            id: 5,
+            iconName: 'address-book',
+            detail: "ประเมินสถานะพนักงานในทีม",
+            position: "ผู้จัดการ"
+        },
     ]
 
     const renderMenuItem = ({ navigation }) => {
-        const [selectedCategory, setSelectedCategory] = useState(null)
+        // const [selectedCategory, setSelectedCategory] = useState(null)
 
         const renderItem = ({ item }) => {
             return (
@@ -57,7 +67,7 @@ const HomeScreen = ({ navigation, route }) => {
                         marginVertical: 16,
                         padding: 8,
                         paddingBottom: SIZES.padding,
-                        backgroundColor: (selectedCategory?.id == item.id) ? COLORS.primary : COLORS.white,
+                        backgroundColor: COLORS.white,
                         borderRadius: 10,
                         alignItems: "center",
                         justifyContent: 'space-between',
@@ -81,6 +91,10 @@ const HomeScreen = ({ navigation, route }) => {
                                     break;
                                 case 4: navigation.navigate('Assessment', { item: item.id });
                                     break;
+                                case 5: position === 'ผู้จัดการ' ?
+                                    navigation.navigate('EmployeeStatusSelect', { item: item.id }) :
+                                    setDialogAdmin(true);
+                                    break;
                                 default: break;
                             }
                         }
@@ -92,10 +106,12 @@ const HomeScreen = ({ navigation, route }) => {
                         size={60} />
                     <Text
                         style={{
+                            fontSize: 16,
                             marginTop: 8,
                             marginBottom: 4,
-                            color: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.black,
-                            ...FONTS.body3
+                            alignSelf: 'center',
+                            // color: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.black,
+                            // ...FONTS.body3
                         }}
                     >
                         {item.detail}
@@ -103,11 +119,10 @@ const HomeScreen = ({ navigation, route }) => {
                     <Text
                         style={{
                             marginBottom: 8,
-                            color: (selectedCategory?.id == item.id) ? COLORS.white : COLORS.black,
-                            ...FONTS.body5
+                            color: 'green'
                         }}
                     >
-                        {item.department}
+                        (สำหรับ {item.position})
                     </Text>
                 </TouchableOpacity >
             );
@@ -134,9 +149,9 @@ const HomeScreen = ({ navigation, route }) => {
                     <Text style={styles.text_header}>แบบประเมิน</Text>
                 </LinearGradient>
                 {/* <View style={{ marginTop: 16, alignSelf: 'center', justifyContent: 'center' }}> */}
-                    <Text style={{margin:16, alignSelf: 'center', fontSize: 16, color: 'green' }}>
-                        สวัสดีคุณ : {USER.name} {USER.lastname}  ({USER.department})
-                    </Text>
+                <Text style={{ margin: 16, alignSelf: 'center', fontSize: 16, color: 'blue' }}>
+                    สวัสดีคุณ : {USER.name} {USER.lastname}  ({USER.department})
+                </Text>
                 {/* </View> */}
                 <View>
                     {renderMenuItem({ navigation })}
