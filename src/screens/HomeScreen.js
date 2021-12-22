@@ -17,8 +17,9 @@ const HomeScreen = ({ navigation, route }) => {
 
     const userid = USER.userid;
     const position = USER.position;
+    const department = USER.department;
 
-    console.log(userid);
+    // console.log(userid);
 
     const [dialogAdmin, setDialogAdmin] = useState(false);
 
@@ -76,8 +77,9 @@ const HomeScreen = ({ navigation, route }) => {
                     }}
                     onPress={() => {
                         {
-                            console.log(item.id);
-                            console.log(position);
+                            // console.log(item.id);
+                            // console.log(position);
+                            // console.log(USER.department);
                             switch (item.id) {
                                 case 1: navigation.navigate('Assessment', { item: item.id });
                                     break;
@@ -85,7 +87,7 @@ const HomeScreen = ({ navigation, route }) => {
                                     navigation.navigate('Assessment', { item: item.id }) :
                                     setDialogAdmin(true);
                                     break;
-                                case 3: position === 'admin' ?
+                                case 3: position === 'ผู้จัดการ' && department === 'MD' ?
                                     navigation.navigate('Assessment', { item: item.id }) :
                                     setDialogAdmin(true);
                                     break;
