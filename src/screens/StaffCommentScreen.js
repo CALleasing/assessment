@@ -241,9 +241,15 @@ const StaffCommentScreen = ({ navigation, route }) => {
 
         const renderItem = ({ item, index }) => {
             // console.log(item.date);
+            var reveal = true;
+            for (var i = 0; i < item.all_answer.length; i++) {
+                if (item.all_answer[i].reveal === 1) {
+                    reveal = false;
+                }
+            }
             return (
                 <View style={{ padding: 8, marginHorizontal: 16, marginVertical: 8, borderRadius: 5, borderColor: 'black', borderWidth: .5 }}>
-                    {item.all_answer[0].reveal === 0 ?
+                    {reveal === true ?
                         <Text style={{ fontSize: 15, fontWeight: 'bold', paddingHorizontal: 8, color: 'blue' }}>{item.name} {item.lastname} ({item.nickname}) [{item.all_answer[0].department}]</Text>
                         :
                         <Text style={{ paddingHorizontal: 8, fontSize: 15, fontWeight: 'bold', color: 'blue' }}>ไม่เปิดเผยชื่อ </Text>
