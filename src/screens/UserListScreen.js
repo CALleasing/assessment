@@ -169,7 +169,7 @@ const UserListScreen = ({ navigation, route }) => {
                 underlineColorAndroid='transparent'
                 placeholder="ค้นหาจากชื่อเล่น" />
 
-            {position === 'admin' ?
+            {position === 'ผู้จัดการ' ?
                 <View style={{ borderBottomWidth: 0.5, borderBottomColor: 'gray' }}>
                     <Text style={{ marginHorizontal: 8, marginBottom: 8, }}>จำนวนคนตอบคำถามครบ {users.length} คน</Text>
                 </View>
