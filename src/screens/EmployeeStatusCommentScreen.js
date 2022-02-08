@@ -12,10 +12,15 @@ const EmployeeStatusCommentScreen = () => {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    // const [dataDelete, setDataDelete] = useState({});
+    const [dataDelete, setDataDelete] = useState({});
 
     useEffect(() => {
-        getAllEmployeeAssessment();
+        if (USER.position === "ผู้จัดการ" && USER.department === "MD") {
+            getAllEmployeeAssessment();
+        } else {
+            getEmployeeAssessmentByDepartment();
+        }
+
     }, []);
 
     const getAllEmployeeAssessment = () => {
@@ -36,6 +41,26 @@ const EmployeeStatusCommentScreen = () => {
 
             });
     };
+
+    const getEmployeeAssessmentByDepartment = () => {
+        setLoading(true);
+        // console.log("getAll")
+        axiox.get(MAIN_URL + '/answer/assessment/departments/' + USER.department)
+            // console.log('https://program-api.herokuapp.com/' + year + '/' + part + '/' + answer.questionNumber + '/Answer/officer/' + userId, answer)
+            .then(res => {
+                console.log("ALL DATA", res.data);
+                setData(res.data)
+                // alert("บันทึกข้อมูลสำเร็จ");
+                setLoading(false);
+            })
+            .catch(err => {
+                console.log(err)
+                // alert("บันทึกข้อมูลล้มเหลว กรุณาลองใหม่");
+                setLoading(false);
+
+            });
+    };
+
 
     const deleteComment = ({ userid, answer, manager_id }) => {
         setLoading(true);
@@ -66,10 +91,10 @@ const EmployeeStatusCommentScreen = () => {
                         วันที่ {moment(item.date).format('ll')}
                     </Text>
                     <Text style={{ fontSize: 16 }}>
-                        ความเห็นจาก <Text style={{ color: 'blue' }}>{item.manager_name} {item.manager_lastname} [{item.manager_nickname}]</Text>
+                        ความเห็นจาก <Text style={{ fontWeight: 'bold', color: 'gray' }}>{item.manager_name} {item.manager_lastname} [{item.manager_nickname}]</Text>
                     </Text>
                     <Text style={{ fontSize: 16 }}>
-                        หากว่า <Text style={{ color: 'green' }}>{item.name} {item.lastname} ({item.nickname}) [{item.department}]</Text> <Text style={{ color: 'red' }}>จะลาออก</Text>
+                        หากว่า <Text style={{ fontWeight: 'bold', color: 'blue' }}>{item.name} {item.lastname} ({item.nickname}) [{item.department}]</Text> <Text style={{ color: 'red' }}>จะลาออก</Text>
                     </Text>
                     <View style={{ marginVertical: 8, borderRadius: 10, borderWidth: 0.5, borderColor: 'gray', padding: 8 }}>
                         <Text style={{ fontSize: 16 }}>
@@ -79,39 +104,37 @@ const EmployeeStatusCommentScreen = () => {
                             เพราะ {item.reason}
                         </Text>
                     </View>
-                    {
-                        USER.department === 'MD' ?
-                            <TouchableOpacity
-                                style={{ position: 'absolute', right: 5, top: 5 }}
-                                onPress={() => {
 
-                                    Alert.alert(
-                                        "ลบความคิดเห็น",
-                                        "คุณต้องการลบความคิดเห็นนี้หรือไม่",
-                                        [
-                                            {
-                                                text: "ลบ",
-                                                onPress: () => {
-                                                    // console.log(dataDelete)
-                                                    deleteComment({ userid: item.userid, answer: item.answer, manager_id: item.manager_id })
-                                                },
-                                                style: "default"
-                                            },
-                                            {
-                                                text: "ยกเลิก",
-                                                onPress: () => { },
-                                                style: "cancle"
-                                            }
-                                        ],
-                                    )
+                    <TouchableOpacity
+                        style={{ position: 'absolute', right: 5, top: 5 }}
+                        onPress={() => {
 
-                                }}>
-                                <Icon name='trash'
-                                    color='red'
-                                    size={20} />
-                            </TouchableOpacity>
-                            : null
-                    }
+                            Alert.alert(
+                                "ลบความคิดเห็น",
+                                "คุณต้องการลบความคิดเห็นนี้หรือไม่",
+                                [
+                                    {
+                                        text: "ลบ",
+                                        onPress: () => {
+                                            // console.log(dataDelete)
+                                            deleteComment({ userid: item.userid, answer: item.answer, manager_id: item.manager_id })
+                                        },
+                                        style: "default"
+                                    },
+                                    {
+                                        text: "ยกเลิก",
+                                        onPress: () => { },
+                                        style: "cancle"
+                                    }
+                                ],
+                            )
+
+                        }}>
+                        <Icon name='trash'
+                            color='red'
+                            size={20} />
+                    </TouchableOpacity>
+
 
                 </View>
             </View>

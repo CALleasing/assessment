@@ -15,15 +15,19 @@ const AssessmentScreen = ({ navigation, route }) => {
     // console.log(sheetID);
     let presentYear = new Date();
     let passedYear = new Date();
-    passedYear.setFullYear(presentYear.getFullYear() - 5);
+    passedYear.setFullYear(2020);
     // console.log(passedYear);
 
     var allYear = [];
 
     const renderYearList = ({ navigation }) => {
         while (presentYear > passedYear) {
+            // if (presentYear.getFullYear() > 2020) {
+            console.log(presentYear.getFullYear())
             allYear.push(new Date(presentYear));
             presentYear.setFullYear(presentYear.getFullYear() - 1);
+            // }
+
         }
 
         const renderItem = ({ item }) => {
@@ -82,6 +86,7 @@ const AssessmentScreen = ({ navigation, route }) => {
                                         })
                                     }
                                     else {
+                                        // console.log(USER.userid);
                                         navigation.navigate('StaffComment',
                                             {
                                                 userId: USER.userid,
@@ -190,6 +195,7 @@ const AssessmentScreen = ({ navigation, route }) => {
 
         return (
             <FlatList
+
                 data={allYear}
                 keyExtractor={(item) => `${item}`}
                 renderItem={renderItem}
@@ -200,7 +206,7 @@ const AssessmentScreen = ({ navigation, route }) => {
     }
 
     return (
-        <Animatable.View style={{ flex: 1, backgroundColor: 'white' }}
+        <Animatable.View style={{paddingVertical:20, flex: 1, backgroundColor: 'white' }}
             animation='fadeIn'>
             {renderYearList({ navigation })}
         </Animatable.View>

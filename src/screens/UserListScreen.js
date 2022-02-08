@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, TextInput, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, SafeAreaView, TextInput, StyleSheet, ActivityIndicator, ScrollView } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -17,6 +17,7 @@ const UserListScreen = ({ navigation, route }) => {
 
     const [users, setUsers] = useState([]);
     const [isLoading, setLoading] = useState(false);
+    const [userNotComplete, setUserNotComplete] = useState([]);
 
     const [arrayholder, setArrayholder] = useState([])
     const [text, setText] = useState("");
@@ -28,6 +29,7 @@ const UserListScreen = ({ navigation, route }) => {
         axiox.get(MAIN_URL + '/question/staff/' + year + '/' + part)
             .then(res => {
                 getUsers(res.data.length);
+
             })
             .catch(err => {
                 console.log(err)
@@ -35,13 +37,30 @@ const UserListScreen = ({ navigation, route }) => {
             });
     };
 
-    const getUsers = (choiceCount) => {
+    const getUsers = async (choiceCount) => {
         // console.log(choiceCount);
-        axiox.get(MAIN_URL + '/users/' + year + '/' + part + '/' + choiceCount)
+        await axiox.get(MAIN_URL + '/users/' + year + '/' + part + '/' + choiceCount)
             .then(res => {
                 setUsers(res.data);
                 setLoading(false);
                 setArrayholder(res.data)
+                getUsersNoComplete(choiceCount);
+                // console.log(users);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    };
+
+    const getUsersNoComplete = async (choiceCount) => {
+        console.log(MAIN_URL + '/users/' + year + '/' + part + '/notcomplete/' + choiceCount);
+        await axiox.get(MAIN_URL + '/users/' + year + '/' + part + '/notcomplete/' + choiceCount)
+            .then(res => {
+                console.log(res.data);
+                setUserNotComplete(res.data);
+                setLoading(false);
+
+                // setArrayholder(res.data)
                 // console.log(users);
             })
             .catch(err => {
@@ -61,6 +80,7 @@ const UserListScreen = ({ navigation, route }) => {
             })
             .catch(err => {
                 console.log(err)
+                setLoading(false);
             })
     };
 
@@ -146,15 +166,48 @@ const UserListScreen = ({ navigation, route }) => {
         }
 
         return (
-            <FlatList
-                data={users}
-                keyExtractor={(item, index) => `${index}`}
-                // ItemSeparatorComponent={itemSeparator}
-                shouldComponentUpdate={false}
-                renderItem={renderItem}
-            // horizontal
-            // showsHorizontalScrollIndicator={false}
-            />
+            sheetID === 2 && department === "MD" ?
+
+                <FlatList
+                    data={users}
+                    keyExtractor={(item, index) => `${index}`}
+                    // ItemSeparatorComponent={itemSeparator}
+                    shouldComponentUpdate={false}
+                    renderItem={renderItem}
+                    ListHeaderComponent={
+                        <View style={{ borderRadius: 8, backgroundColor: 'green', padding: 20 }}>
+                            <Text style={{ color: 'white', fontSize: 20 }}>คนตอบคำถามครบ</Text>
+                        </View>
+                    }
+                    ListFooterComponent={
+                        <FlatList
+                            data={userNotComplete}
+                            keyExtractor={(item, index) => `${index}`}
+                            // ItemSeparatorComponent={itemSeparator}
+                            shouldComponentUpdate={false}
+                            renderItem={renderItem}
+                            ListHeaderComponent={
+                                <View style={{ borderRadius: 8, backgroundColor: 'red', padding: 20 }}>
+                                    <Text style={{ color: 'white', fontSize: 20 }}>คนตอบคำถามไม่ครบ</Text>
+                                </View>
+                            }
+                        />
+                    }
+
+                // horizontal
+                // showsHorizontalScrollIndicator={false}
+                />
+
+                :
+                <FlatList
+                    data={users}
+                    keyExtractor={(item, index) => `${index}`}
+                    // ItemSeparatorComponent={itemSeparator}
+                    shouldComponentUpdate={false}
+                    renderItem={renderItem}
+                // horizontal
+                // showsHorizontalScrollIndicator={false}
+                />
 
         );
     }
@@ -169,11 +222,13 @@ const UserListScreen = ({ navigation, route }) => {
                 underlineColorAndroid='transparent'
                 placeholder="ค้นหาจากชื่อเล่น" />
 
-            {position === 'ผู้จัดการ' ?
+            {position === 'ผู้จัดการ' && department === "MD" ?
                 <View style={{ borderBottomWidth: 0.5, borderBottomColor: 'gray' }}>
-                    <Text style={{ marginHorizontal: 8, marginBottom: 8, }}>จำนวนคนตอบคำถามครบ {users.length} คน</Text>
+                    <Text style={{ color: 'green', marginHorizontal: 8, marginBottom: 8, }}>จำนวนคนตอบคำถามครบ {users.length} คน</Text>
+                    <Text style={{ color: 'red', marginHorizontal: 8, marginBottom: 8, }}>จำนวนคนตอบคำถามไม่ครบ {userNotComplete.length} คน</Text>
                 </View>
                 :
+
                 null}
 
 

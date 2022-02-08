@@ -45,12 +45,13 @@ const StaffCommentScreen = ({ navigation, route }) => {
 
     const getAllQuestionWithAnswer = () => {
         setLoadingPage(true);
+        // console.log("TEST")
         // console.log(MAIN_URL + '/answer/comment/user/' + year + '/' + part + '/' + managerID + '/' + userId)
         // console.log("getAllQuestionWithAnswer");
         axiox.get(MAIN_URL + '/answer/comment/user/' + year + '/' + part + '/' + managerID + '/' + userId)
             // console.log('https://program-api.herokuapp.com/' + year + '/' + part + '/' + answer.questionNumber + '/Answer/officer/' + userId, answer)
             .then(res => {
-
+                // console.log("REAL DATA :", res.data);
                 setQuestionWithAnswer(res.data)
                 // alert("บันทึกข้อมูลสำเร็จ");
                 setLoadingPage(false);
@@ -114,7 +115,7 @@ const StaffCommentScreen = ({ navigation, route }) => {
         axiox.get(MAIN_URL + '/answer/comment/manager/' + year + '/' + part + '/' + userId + '/' + number)
             // console.log('https://program-api.herokuapp.com/' + year + '/' + part + '/' + answer.questionNumber + '/Answer/officer/' + userId, answer)
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 setAnswer(res.data)
                 // alert("บันทึกข้อมูลสำเร็จ");
                 setLoading(false);
@@ -158,58 +159,103 @@ const StaffCommentScreen = ({ navigation, route }) => {
         var lastname = '';
         var nickname = '';
 
+        var obj = {};
+
         for (var i = 0; i < data.length; i++) {
             if (i === 0) {
                 lastUserid = data[i].userid;
+                // console.log("START", i)
+                // console.log("LAST USERID", lastUserid);
             }
             if (data[i].userid === lastUserid) {
+                // 
+                // console.log("DATA USERID", data[i].userid)
                 userid = data[i].userid;
                 name = data[i].name;
                 lastname = data[i].lastname;
                 nickname = data[i].nickname;
 
-                if (data.length - 1 === i) {
-                    console.log(data.length - 1);
-                    console.log(i)
-                    var obj = {
-                        userid: userid,
-                        name: name,
-                        lastname: lastname,
-                        nickname: nickname,
-                        all_answer: answerGroup
-                    }
-                    // console.log(obj)
-                    answerGroup.push(data[i]);
+                console.log("IF")
+                console.log("INDEX : ", i)
 
-                    allAnswerGroup.push(obj);
+                // if (data.length - 1 === i) {
+                //     console.log(data[i]);
+                //     console.log(i)
 
-                    setAnswerFormanager(allAnswerGroup);
-                    console.log(answerForManger)
-                }
-                else {
-                    answerGroup.push(data[i]);
-                }
+                answerGroup.push(data[i]);
 
-            } else {
-                var obj = {
+                obj = {
                     userid: userid,
                     name: name,
                     lastname: lastname,
                     nickname: nickname,
                     all_answer: answerGroup
                 }
+                console.log("IF", obj)
+
+
+                if (i === data.length - 1) {
+                    allAnswerGroup.push(obj);
+                }
+                // console.log(i, allAnswerGroup);
+
+
+
+
+                // console.log("ALL ANSER",answerForManger)
+                // }
+                // else {
+                //     answerGroup.push(data[i]);
+                // }
+
+            } else {
+                allAnswerGroup.push(obj);
+
+                obj = {};
+                console.log("OBJECT", obj)
+
+                console.log("ELSE")
+                console.log("INDEX : ", i)
+
+                answerGroup = [];
+
+                console.log("ANSER GROUP", answerGroup)
+                // if (data.length - 1 === i) {\
+                answerGroup.push(data[i]);
+                obj = {
+                    userid: data[i].userid,
+                    name: data[i].name,
+                    lastname: data[i].lastname,
+                    nickname: data[i].nickname,
+                    all_answer: answerGroup
+                }
+                console.log("ELSE", obj)
+
+                if (i === data.length - 1) {
+                    allAnswerGroup.push(obj);
+                }
+
+                lastUserid = data[i].userid;
+                // console.log(answerForManger);
+                // lastUserid = data[i].userid;
+
+
+                // console.log("USERID", data[i].userid)
+
+
+
+                // }
+
+
 
                 // console.log(obj)
 
-                allAnswerGroup.push(obj);
-                // console.log(answerForManger);
-                answerGroup = [];
-                lastUserid = data[i].userid;
 
-                answerGroup.push(data[i]);
+
             }
         }
-        // console.log(answerForManger);
+        // console.log(allAnswerGroup);
+        setAnswerFormanager(allAnswerGroup);
     }
 
     const postAnswer = ({ dataSend, number }) => {
@@ -230,7 +276,9 @@ const StaffCommentScreen = ({ navigation, route }) => {
     }
 
     const renderManagerCheck = () => {
+        // console.log("TEST")
         const renderUserWithAllAnswer = ({ item, index }) => {
+            // console.log(item);
             return (
                 <View style={{ marginBottom: 14 }}>
                     <Text style={{ fontWeight: 'bold' }}>{item.number}. {item.qt}</Text>
@@ -335,6 +383,7 @@ const StaffCommentScreen = ({ navigation, route }) => {
             );
         };
 
+        // console.log(answerForManger)
         return (
             loadingPage ?
                 <ActivityIndicator style={{

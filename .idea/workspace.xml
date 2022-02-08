@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="61188558-442f-4b69-bee5-8565431c3328" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.expo/packager-info.json" beforeDir="false" afterPath="$PROJECT_DIR$/.expo/packager-info.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/web/cache/production/images/apple-touch-startup-image/apple-touch-startup-image-052227dc810848b3a2fc99161a392256ea9ef37da10b69b6630ccf6dbb5e2ca6-contain-#ffffff/apple-touch-startup-image-1125x2436.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/web/cache/production/images/apple-touch-startup-image/apple-touch-startup-image-052227dc810848b3a2fc99161a392256ea9ef37da10b69b6630ccf6dbb5e2ca6-contain-#ffffff/apple-touch-startup-image-1242x2208.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/web/cache/production/images/apple-touch-startup-image/apple-touch-startup-image-052227dc810848b3a2fc99161a392256ea9ef37da10b69b6630ccf6dbb5e2ca6-contain-#ffffff/apple-touch-startup-image-1242x2688.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/web/cache/production/images/apple-touch-startup-image/apple-touch-startup-image-052227dc810848b3a2fc99161a392256ea9ef37da10b69b6630ccf6dbb5e2ca6-contain-#ffffff/apple-touch-startup-image-1536x2048.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/web/cache/production/images/apple-touch-startup-image/apple-touch-startup-image-052227dc810848b3a2fc99161a392256ea9ef37da10b69b6630ccf6dbb5e2ca6-contain-#ffffff/apple-touch-startup-image-1668x2224.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/web/cache/production/images/apple-touch-startup-image/apple-touch-startup-image-052227dc810848b3a2fc99161a392256ea9ef37da10b69b6630ccf6dbb5e2ca6-contain-#ffffff/apple-touch-startup-image-1668x2388.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/web/cache/production/images/apple-touch-startup-image/apple-touch-startup-image-052227dc810848b3a2fc99161a392256ea9ef37da10b69b6630ccf6dbb5e2ca6-contain-#ffffff/apple-touch-startup-image-2048x2732.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/web/cache/production/images/apple-touch-startup-image/apple-touch-startup-image-052227dc810848b3a2fc99161a392256ea9ef37da10b69b6630ccf6dbb5e2ca6-contain-#ffffff/apple-touch-startup-image-640x1136.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/web/cache/production/images/apple-touch-startup-image/apple-touch-startup-image-052227dc810848b3a2fc99161a392256ea9ef37da10b69b6630ccf6dbb5e2ca6-contain-#ffffff/apple-touch-startup-image-750x1334.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.expo/web/cache/production/images/apple-touch-startup-image/apple-touch-startup-image-052227dc810848b3a2fc99161a392256ea9ef37da10b69b6630ccf6dbb5e2ca6-contain-#ffffff/apple-touch-startup-image-828x1792.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/amplify-explicit.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/splash.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/splash.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants/variables.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants/variables.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/AssessmentScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/AssessmentScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/HomeScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/LoginScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/LoginScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/ManagerQuestionnaireScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/ManagerQuestionnaireScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/StaffQuestionnaireScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/StaffQuestionnaireScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/UserListScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/UserListScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-build/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-build/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-build/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/web-build/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-build/service-worker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-build/service-worker.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-build/static/js/2.142769b8.chunk.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-build/static/js/2.142769b8.chunk.js.LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-build/static/js/2.142769b8.chunk.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-build/static/js/app.629d3ea2.chunk.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-build/static/js/app.629d3ea2.chunk.js.map" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1ztJ0bof4ZCcEuJW5EHNET0ArOD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="61188558-442f-4b69-bee5-8565431c3328" name="Default Changelist" comment="" />
+      <created>1634961234724</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1634961234724</updated>
+    </task>
+    <servers />
+  </component>
+</project>
