@@ -73,9 +73,18 @@ const UserListScreen = ({ navigation, route }) => {
         // console.log(MAIN_URL + '/users/department/' + department);
         axiox.get(MAIN_URL + '/users/department/' + department)
             .then(res => {
-                setUsers(res.data);
+                for(var i = 0; i < res.data.length; i++){
+                    setUsers(pre => [...pre, res.data[i]]);
+                    setArrayholder(holder => [...holder, res.data[i]])
+                }
+                // setUsers(res.data);
                 setLoading(false);
-                setArrayholder(res.data)
+                // setArrayholder(res.data);
+
+                if(department === 'AR'){
+                    departmentAR();
+                    console.log("TEST")
+                }
                 // console.log(users);
             })
             .catch(err => {
@@ -84,10 +93,69 @@ const UserListScreen = ({ navigation, route }) => {
             })
     };
 
+    const departmentIT = () => {
+        axiox.get(MAIN_URL + '/users/department/IT')
+            .then(res => {
+                for(var i = 0; i < res.data.length; i++){
+                    setUsers(pre => [...pre, res.data[i]]);
+                    setArrayholder(holder => [...holder, res.data[i]])
+                }
+                // setUsers(pre => [pre, res.data]);
+                // setLoading(false);
+                
+                
+                departmentOP();
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false);
+            })
+    }
+
+    const departmentOP = () => {
+        axiox.get(MAIN_URL + '/users/department/OP')
+            .then(res => {
+                for(var i = 0; i < res.data.length; i++){
+                    setUsers(pre => [...pre, res.data[i]]);
+                    setArrayholder(holder => [...holder, res.data[i]])
+                }
+              
+                setLoading(false);
+                
+                console.log(users);
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false);
+            })
+    }
+
+    const departmentAR = () => {
+        axiox.get(MAIN_URL + '/users/department/AD')
+            .then(res => {
+                for(var i = 0; i < res.data.length; i++){
+                    setUsers(pre => [...pre, res.data[i]]);
+                    setArrayholder(holder => [...holder, res.data[i]])
+                }
+              
+                setLoading(false);
+                
+                // console.log(users);
+            })
+            .catch(err => {
+                console.log(err)
+                setLoading(false);
+            })
+    }
+
     useEffect(() => {
         setLoading(true);
         if (sheetID === 5) {
-            getDepartment();
+            if (position === 'admin' || department === 'MD') {
+                departmentIT();
+            } else {
+                getDepartment();
+            }
         }
         else {
             if (position === 'admin' || department === 'MD') {
